@@ -314,10 +314,45 @@ function initDOM() {
   });
 
   // Initialize dynamic data selectors
+  populateSyndromes();
   populateIsolatedPathogens();
   renderAntibioticSelectors();
   populateLookupDropdown();
   queryLookup();
+}
+
+function populateSyndromes() {
+  const select = document.getElementById('infection-syndrome');
+  if (!select) return;
+  select.innerHTML = '';
+  
+  // Group syndromes by site / system
+  const grouped = {};
+  Object.keys(SYNDROMES).forEach(key => {
+    const s = SYNDROMES[key];
+    const site = s.site || "General / Other";
+    if (!grouped[site]) {
+      grouped[site] = [];
+    }
+    grouped[site].push({ key, ...s });
+  });
+  
+  // Group and sort anatomical sites alphabetically
+  Object.keys(grouped).sort().forEach(site => {
+    const optgroup = document.createElement('optgroup');
+    optgroup.label = site;
+    
+    grouped[site].forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s.key;
+      opt.text = s.name;
+      if (s.key === state.config.selectedSyndrome) {
+        opt.selected = true;
+      }
+      optgroup.appendChild(opt);
+    });
+    select.appendChild(optgroup);
+  });
 }
 
 function showBugRecommendations(bugId) {

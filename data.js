@@ -44,7 +44,7 @@ export const PATHOGENS = {
 export const SYNDROMES = {
   "cap": {
     name: "Community-Acquired Pneumonia (CAP)",
-    site: "Respiratory",
+    site: "Respiratory System",
     description: "Acute infection of the lung parenchyma acquired outside the hospital setting.",
     expectedPathogens: [
       "streptococcus_pneumoniae",
@@ -57,7 +57,7 @@ export const SYNDROMES = {
   },
   "hap": {
     name: "Hospital-Acquired Pneumonia (HAP)",
-    site: "Respiratory",
+    site: "Respiratory System",
     description: "Pneumonia developing >= 48 hours after hospital admission, frequently involving multidrug-resistant pathogens.",
     expectedPathogens: [
       "pseudomonas_aeruginosa",
@@ -71,7 +71,7 @@ export const SYNDROMES = {
   },
   "uti_cystitis": {
     name: "Acute Uncomplicated Cystitis",
-    site: "Urinary",
+    site: "Urinary Tract",
     description: "Lower urinary tract infection limited to the bladder, typically in healthy adult females.",
     expectedPathogens: [
       "escherichia_coli",
@@ -82,7 +82,7 @@ export const SYNDROMES = {
   },
   "uti_pyelonephritis": {
     name: "Acute Pyelonephritis / Complicated UTI",
-    site: "Urinary",
+    site: "Urinary Tract",
     description: "Upper urinary tract infection involving the renal parenchyma, pelvis, or complicated by urinary tract obstructions.",
     expectedPathogens: [
       "escherichia_coli",
@@ -95,7 +95,7 @@ export const SYNDROMES = {
   },
   "cellulitis": {
     name: "Cellulitis / Skin & Soft Tissue Infection",
-    site: "Skin/Soft Tissue",
+    site: "Skin, Bone & Joint (MSK)",
     description: "Acute bacterial infection of the deep dermis and subcutaneous tissue.",
     expectedPathogens: [
       "streptococcus_pyogenes",
@@ -103,9 +103,19 @@ export const SYNDROMES = {
       "staphylococcus_aureus_mrsa"
     ]
   },
+  "osteomyelitis": {
+    name: "Osteomyelitis / Septic Arthritis",
+    site: "Skin, Bone & Joint (MSK)",
+    description: "Deep infection of the bone or joint space, requiring long-term antibiotic exposure.",
+    expectedPathogens: [
+      "staphylococcus_aureus_mssa",
+      "staphylococcus_aureus_mrsa",
+      "streptococcus_pyogenes"
+    ]
+  },
   "meningitis": {
     name: "Acute Bacterial Meningitis",
-    site: "CNS",
+    site: "CNS / Meninges",
     description: "Medical emergency involving inflammation of the meninges surrounding the brain and spinal cord.",
     expectedPathogens: [
       "streptococcus_pneumoniae",
@@ -114,7 +124,7 @@ export const SYNDROMES = {
   },
   "intra_abdominal": {
     name: "Intra-abdominal Infection (Peritonitis / Abscess)",
-    site: "Abdominal",
+    site: "Gastrointestinal & Abdominal",
     description: "Infections involving visceral organs or the peritoneal cavity, usually polymicrobial.",
     expectedPathogens: [
       "escherichia_coli",
@@ -122,6 +132,29 @@ export const SYNDROMES = {
       "bacteroides_fragilis",
       "enterococcus_faecalis",
       "peptostreptococcus_spp"
+    ]
+  },
+  "cholecystitis_cholangitis": {
+    name: "Acute Cholecystitis / Cholangitis",
+    site: "Gastrointestinal & Abdominal",
+    description: "Biliary tract infection typically secondary to gallstone obstruction.",
+    expectedPathogens: [
+      "escherichia_coli",
+      "klebsiella_pneumoniae",
+      "enterococcus_faecalis",
+      "bacteroides_fragilis"
+    ]
+  },
+  "neutropenic_sepsis": {
+    name: "Neutropenic Sepsis",
+    site: "Systemic / Sepsis",
+    description: "Life-threatening complication of cancer chemotherapy requiring immediate empirical broad-spectrum IV therapy.",
+    expectedPathogens: [
+      "escherichia_coli",
+      "klebsiella_pneumoniae",
+      "pseudomonas_aeruginosa",
+      "staphylococcus_aureus_mssa",
+      "streptococcus_pneumoniae"
     ]
   }
 };
@@ -581,6 +614,10 @@ export const GUIDELINES = {
     nice: "NICE Guideline NG141 (Skin & Soft Tissue Infections):\n- **Mild-to-Moderate Cellulitis:** First-line is **Flucloxacillin** 500mg-1g QDS PO (5-7 days). Alternative is Clarithromycin or Erythromycin.\n- **Severe Cellulitis:** **Flucloxacillin** 1g-2g QDS IV or **Ceftriaxone** 2g QD IV. If MRSA suspected, use **Vancomycin** or **Teicoplanin**.",
     smi: "UK SMI B 11 (Investigation of Skin and Superficial Soft Tissue):\n- Swabs of intact skin are of no clinical value. Aspirates or biopsies required for deep/necrotizing fasciitis."
   },
+  "osteomyelitis": {
+    nice: "NICE Guideline NG191 (Osteomyelitis / Septic Arthritis):\n- **Empirical therapy:** **Flucloxacillin** 1g-2g Q6h IV or 500mg-1g Q6h PO (typically 4-6 weeks total). Alternative if penicillin-allergic: **Clindamycin** 300-600mg Q6h PO/IV.\n- **MRSA Suspected:** Add **Vancomycin** (or Teicoplanin). Adjust based on bone biopsy culture.",
+    smi: "UK SMI B 42 (Investigation of Bone and Joint Infections):\n- Bone biopsies are preferred over superficial wound swabs for definitive microbial isolation."
+  },
   "meningitis": {
     nice: "NICE Guideline CG102 (Meningitis - Bacterial):\n- **Empirical treatment in pre-hospital setting (if petechial rash):** Benzylpenicillin 1.2g IM/IV.\n- **Hospital Empirical (Age 3 months to 50 years):** **Ceftriaxone** 2g Q12h IV.\n- **Hospital Empirical (Age > 50 or immunocompromised):** **Ceftriaxone** 2g Q12h IV + **Amoxicillin** 2g Q4h IV (to cover Listeria monocytogenes).",
     smi: "UK SMI B 27 (Investigation of Cerebrospinal Fluid):\n- CSF cell count, Gram stain, and PCR for Neisseria meningitidis and Strep pneumoniae are critical diagnostic markers."
@@ -588,5 +625,13 @@ export const GUIDELINES = {
   "intra_abdominal": {
     nice: "NICE Guidelines (Surgical Site & Intra-abdominal Infections):\n- Empirical regimens must cover coliforms, enterococci, and anaerobes.\n- **Severe / High-risk Peritonitis:** First-line is **Piperacillin/Tazobactam** 4.5g TDS IV, or **Meropenem** 1g TDS IV.",
     smi: "UK SMI B 14 (Investigation of Intra-abdominal and Pelvic Infections):\n- Peritoneal fluid culture and anaerobic cultivation are mandatory for organ perforations."
+  },
+  "cholecystitis_cholangitis": {
+    nice: "NICE Guideline NG188 (Intra-abdominal Infections):\n- **First-line Empirical PO/IV:** **Co-amoxiclav** 1.2g TDS IV or 625mg TDS PO (duration 3-5 days after source control).\n- **Alternative (Penicillin allergy):** Ciprofloxacin 400mg TDS IV / 500mg BD PO + Metronidazole 500mg IV / 400mg TDS PO.",
+    smi: "UK SMI B 14 (Investigation of Intra-abdominal Infections):\n- Blood cultures and bile aspirates are highly valuable for guiding targeted therapy in severe cholangitis."
+  },
+  "neutropenic_sepsis": {
+    nice: "NICE Guideline CG151 (Neutropenic Sepsis):\n- **Empirical first-line:** Immediately administer empirical monotherapy with **Piperacillin/Tazobactam** (Tazocin) 4.5g TDS IV. Do not delay for diagnostics.\n- **Alternative:** **Meropenem** (reserved for patients with history of beta-lactam anaphylaxis or known ESBL colonization). Add Vancomycin only if catheter infection suspected.",
+    smi: "UK Standard Sepsis Protocols:\n- Pre-dose blood cultures are mandatory, but administering the first antibiotic dose must occur within 1 hour of presentation ('Sepsis Six' pathway)."
   }
 };
