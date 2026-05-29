@@ -136,6 +136,15 @@ export const ANTIBIOTICS = {
     pkTraps: {},
     comments: "Primarily used for Streptococcus and sensitive Enterococcus. Susceptible to beta-lactamases."
   },
+  "flucloxacillin": {
+    name: "Flucloxacillin",
+    class: "Penicillin (Narrow - Antistaphylococcal)",
+    spectrumScore: 2,
+    standardDose: "500mg-1g PO Q6h or 1-2g IV Q6h",
+    renalAdjustments: [],
+    pkTraps: {},
+    comments: "First-line UK choice for skin/soft tissue infections. Resistant to staphylococcal beta-lactamases."
+  },
   "co_amoxiclav": {
     name: "Co-amoxiclav (Amoxicillin/Clavulanate)",
     class: "Penicillin + Beta-Lactamase Inhibitor",
@@ -302,6 +311,26 @@ export const SPECTRUM = {
     "enterococcus_faecium": 0,
     "bacteroides_fragilis": 0,
     "clostridium_perfringens": 2,
+    "peptostreptococcus_spp": 2,
+    "mycoplasma_pneumoniae": 0,
+    "chlamydophila_pneumoniae": 0,
+    "legionella_pneumophila": 0
+  },
+  "flucloxacillin": {
+    "escherichia_coli": 0,
+    "klebsiella_pneumoniae": 0,
+    "pseudomonas_aeruginosa": 0,
+    "haemophilus_influenzae": 0,
+    "enterobacter_cloacae": 0,
+    "proteus_mirabilis": 0,
+    "streptococcus_pneumoniae": 2,
+    "staphylococcus_aureus_mssa": 2,
+    "staphylococcus_aureus_mrsa": 0,
+    "streptococcus_pyogenes": 2,
+    "enterococcus_faecalis": 0,
+    "enterococcus_faecium": 0,
+    "bacteroides_fragilis": 0,
+    "clostridium_perfringens": 1,
     "peptostreptococcus_spp": 2,
     "mycoplasma_pneumoniae": 0,
     "chlamydophila_pneumoniae": 0,

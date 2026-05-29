@@ -158,19 +158,6 @@
       <div class="card">
         <h2 class="card-title"><span class="card-icon">💊</span> 3. Regimen & Stewardship</h2>
         
-        <!-- Current Regimen Selection (Stewardship Compare) -->
-        <div class="regimen-section">
-          <div class="regimen-header">
-            <span class="regimen-title-text">Current Regimen (Patient is on this)</span>
-            <button type="button" class="btn btn-link btn-xs" id="clear-current-regimen">Clear</button>
-          </div>
-          <div class="antibiotic-selector-grid" id="current-antibiotic-list">
-            <!-- Populated with checkboxes for multiple drug selection -->
-          </div>
-        </div>
-
-        <hr class="card-divider">
-
         <!-- Proposed Regimen / Intervention Selection -->
         <div class="regimen-section">
           <div class="regimen-header">
@@ -178,6 +165,19 @@
             <button type="button" class="btn btn-link btn-xs" id="clear-proposed-regimen">Clear</button>
           </div>
           <div class="antibiotic-selector-grid" id="proposed-antibiotic-list">
+            <!-- Populated with checkboxes for multiple drug selection -->
+          </div>
+        </div>
+
+        <hr class="card-divider">
+
+        <!-- Current Regimen Selection (Stewardship Compare) -->
+        <div class="regimen-section">
+          <div class="regimen-header">
+            <span class="regimen-title-text">Current Regimen (Patient is on this)</span>
+            <button type="button" class="btn btn-link btn-xs" id="clear-current-regimen">Clear</button>
+          </div>
+          <div class="antibiotic-selector-grid" id="current-antibiotic-list">
             <!-- Populated with checkboxes for multiple drug selection -->
           </div>
         </div>
@@ -303,6 +303,22 @@
   <footer class="app-footer">
     <p>Educational Microbiology Sandbox &copy; 2026. Designed for clinical training purposes. Do not use for patient care decision-making.</p>
   </footer>
+
+  <!-- Pathogen Recommendation Modal -->
+  <div id="recommendation-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-bug-name">Select Pathogen</h3>
+        <button type="button" class="modal-close" id="close-modal-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 0.75rem;">Susceptible antimicrobials in the database:</p>
+        <div class="recommendation-list" id="modal-recommendations-list" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 250px; overflow-y: auto;">
+          <!-- Dynamically populated list -->
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- App Main script -->
   <script type="module" src="app.js"></script>

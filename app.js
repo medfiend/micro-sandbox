@@ -219,11 +219,78 @@ function initDOM() {
     queryLookup();
   });
 
+  // Click handler delegation for clickable bug names
+  document.body.addEventListener('click', (e) => {
+    const clickable = e.target.closest('.clickable-bug');
+    if (clickable) {
+      const bugId = clickable.getAttribute('data-bug-id');
+      showBugRecommendations(bugId);
+    }
+  });
+
+  // Modal Close event handlers
+  const modal = document.getElementById('recommendation-modal');
+  document.getElementById('close-modal-btn').addEventListener('click', () => {
+    modal.classList.add('hidden');
+  });
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.add('hidden');
+    }
+  });
+
   // Initialize dynamic data selectors
   populateIsolatedPathogens();
   renderAntibioticSelectors();
   populateLookupDropdown();
   queryLookup();
+}
+
+function showBugRecommendations(bugId) {
+  // Find readable bug name
+  let bugName = bugId;
+  Object.keys(PATHOGENS).forEach(group => {
+    if (PATHOGENS[group].bugs[bugId]) bugName = PATHOGENS[group].bugs[bugId];
+  });
+
+  const modal = document.getElementById('recommendation-modal');
+  const title = document.getElementById('modal-bug-name');
+  const listContainer = document.getElementById('modal-recommendations-list');
+
+  title.innerText = `Empirical Cover: ${bugName}`;
+  listContainer.innerHTML = '';
+
+  // Find all antibiotics that cover this bug (score = 2)
+  const recommendations = [];
+  Object.keys(ANTIBIOTICS).forEach(drugId => {
+    const score = SPECTRUM[drugId]?.[bugId] || 0;
+    if (score === 2) {
+      recommendations.push(ANTIBIOTICS[drugId]);
+    }
+  });
+
+  if (recommendations.length === 0) {
+    listContainer.innerHTML = `<p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-top: 1rem;">No antibiotic in the database provides full empirical cover (2) for this bug. Check synergistic options.</p>`;
+  } else {
+    recommendations.forEach(drug => {
+      const div = document.createElement('div');
+      div.className = "rec-item";
+      
+      const nameSpan = document.createElement('span');
+      nameSpan.className = "rec-item-name";
+      nameSpan.innerText = drug.name;
+
+      const classSpan = document.createElement('span');
+      classSpan.className = "rec-item-class";
+      classSpan.innerText = drug.class;
+
+      div.appendChild(nameSpan);
+      div.appendChild(classSpan);
+      listContainer.appendChild(div);
+    });
+  }
+
+  modal.classList.remove('hidden');
 }
 
 // --- MICROBIOLOGY & ANTIBIOGRAM UTILITIES ---
@@ -780,7 +847,7 @@ function compileRegimenCritiques() {
         Object.keys(PATHOGENS).forEach(g => {
           if (PATHOGENS[g].bugs[bugId]) name = PATHOGENS[g].bugs[bugId];
         });
-        uncovered.push(name);
+        uncovered.push(`<span class="clickable-bug" data-bug-id="${bugId}">${name}</span><span class="bug-gap-badge">uncovered</span>`);
       }
     });
 
@@ -788,7 +855,7 @@ function compileRegimenCritiques() {
       critiques.push({
         type: "warning",
         title: "Empirical Spectrum Gaps",
-        message: `Your proposed regimen leaves the following expected pathogens untreated for ${SYNDROMES[syndrome].name}: **${uncovered.join(', ')}**.`,
+        message: `Your proposed regimen leaves the following expected pathogens untreated for ${SYNDROMES[syndrome].name}: ${uncovered.join(', ')}. <br><br><strong>Tip:</strong> Click any red-badged pathogen name above to view a list of recommended covering agents.`,
         evidence: "Empirical regimens should cover typical clinical flora associated with the site of infection until cultures are available. Check the Spectrum Grid tab for detailed matrices."
       });
     } else {
@@ -797,6 +864,46 @@ function compileRegimenCritiques() {
         title: "Adequate Empirical Spectrum",
         message: `Your proposed regimen cocktail covers 100% of typical organisms expected for **${SYNDROMES[syndrome].name}**.`,
         evidence: "Meets baseline empirical recommendations for local guidelines comparison."
+      });
+    }
+
+    // 3b. Actionable Guideline Congruence Checks
+    if (syndrome === "cellulitis" && !proposed.includes("flucloxacillin")) {
+      critiques.push({
+        type: "warning",
+        title: "Guideline Discordance: Cellulitis",
+        message: "Your proposed regimen does not contain **Flucloxacillin**. NICE Guideline NG141 recommends Flucloxacillin (500mg-1g Q6h PO/IV) as first-line empirical therapy to target Streptococcus pyogenes and Staphylococcus aureus.",
+        evidence: "Flucloxacillin is the standard UK agent for skin/soft tissue infections due to its narrow spectrum and stability against staphylococcal penicillinases."
+      });
+    }
+
+    if (syndrome === "cap" && !proposed.includes("amoxicillin") && !proposed.includes("co_amoxiclav")) {
+      critiques.push({
+        type: "warning",
+        title: "Guideline Discordance: CAP",
+        message: "Your proposed regimen lacks a standard first-line agent. NICE Guideline NG138 recommends **Amoxicillin** PO (non-severe CAP) or **Co-amoxiclav** 1.2g TDS IV + **Clarithromycin** (severe HAP/CAP).",
+        evidence: "Amoxicillin is preferred to maintain narrow-spectrum coverage of Streptococcus pneumoniae and prevent carbapenem resistance."
+      });
+    }
+
+    if (syndrome === "uti_cystitis" && !proposed.includes("nitrofurantoin")) {
+      critiques.push({
+        type: "warning",
+        title: "Guideline Discordance: Cystitis",
+        message: "Your proposed regimen lacks first-line cover. NICE Guideline NG109 recommends **Nitrofurantoin** 100mg MR BD PO (or Trimethoprim) as first-line empirical therapy.",
+        evidence: "Nitrofurantoin concentrates exclusively in the lower urinary tract and has low resistance rates for coliforms in the UK."
+      });
+    }
+  }
+
+  // Actionable Current Regimen Stewardship switches
+  if (current.length > 0) {
+    if (syndrome === "cellulitis" && current.includes("amoxicillin") && !proposed.includes("flucloxacillin")) {
+      critiques.push({
+        type: "warning",
+        title: "Stewardship Intervention: Cellulitis Switch",
+        message: "The patient is currently on **Amoxicillin** for cellulitis. Amoxicillin has poor stability against staphylococcal beta-lactamases and is suboptimal. NICE Guideline NG141 recommends **Flucloxacillin**. Consider switching the regimen to Flucloxacillin.",
+        evidence: "Over 90% of S. aureus strains isolated in the UK produce penicillinases, rendering amoxicillin inactive."
       });
     }
   }
@@ -1082,7 +1189,7 @@ function renderSpectrumMatrix() {
     }
 
     const tdName = document.createElement('td');
-    tdName.innerHTML = `${bugName} ${isExpected ? '<span style="font-size: 0.65rem; color: var(--color-primary); margin-left: 0.25rem;">(expected)</span>' : ''}`;
+    tdName.innerHTML = `<span class="clickable-bug" data-bug-id="${bugId}">${bugName}</span> ${isExpected ? '<span style="font-size: 0.65rem; color: var(--color-primary); margin-left: 0.25rem;">(expected)</span>' : ''}`;
     tr.appendChild(tdName);
 
     displayDrugs.forEach(drugId => {
