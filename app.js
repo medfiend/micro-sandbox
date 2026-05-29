@@ -98,7 +98,6 @@ function initDOM() {
   });
   
   // Sync desktop tabs back to mobile navigation active state
-  const tabs = document.querySelectorAll('.tab-btn');
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       const tabId = tab.getAttribute('data-tab');
