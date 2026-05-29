@@ -21,7 +21,8 @@ const state = {
     dosingDrug: "amoxicillin",
     prescribedDose: "500mg",
     prescribedFreq: "Q8h",
-    prescribedRoute: "PO"
+    prescribedRoute: "PO",
+    spectrumViewMode: "case" // "case" | "alternatives" | "full"
   },
   lookup: {
     path: "drug", // "drug" or "bug"
@@ -51,20 +52,93 @@ function initDOM() {
     });
   });
 
-  // Demographics Accordion Toggle
-  const toggleBtn = document.getElementById('toggle-demographics');
-  const panel = document.getElementById('demographics-panel');
-  const arrow = document.getElementById('accordion-indicator');
-  toggleBtn.addEventListener('click', () => {
-    state.config.demographicsExpanded = !state.config.demographicsExpanded;
-    if (state.config.demographicsExpanded) {
-      panel.classList.remove('hidden');
-      arrow.classList.add('active');
-    } else {
-      panel.classList.add('hidden');
-      arrow.classList.remove('active');
+  // Generic Accordion Handler
+  document.querySelectorAll('.card-accordion').forEach(card => {
+    const trigger = card.querySelector('.accordion-trigger');
+    const content = card.querySelector('.accordion-content');
+    const arrow = card.querySelector('.arrow-down');
+    
+    if (trigger && content) {
+      trigger.addEventListener('click', () => {
+        const isCollapsed = content.classList.toggle('hidden');
+        if (arrow) {
+          if (isCollapsed) {
+            arrow.classList.remove('active');
+          } else {
+            arrow.classList.add('active');
+          }
+        }
+      });
     }
   });
+
+  // Mobile Bottom Navigation Tabs Switching & Sync
+  const mobileNavBtns = document.querySelectorAll('.mobile-nav-btn');
+  mobileNavBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      mobileNavBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      const targetTab = btn.getAttribute('data-tab');
+      if (targetTab === 'col-inputs') {
+        document.body.classList.remove('show-outputs');
+        document.body.classList.add('show-inputs');
+      } else {
+        document.body.classList.remove('show-inputs');
+        document.body.classList.add('show-outputs');
+        
+        // Simulate click on the corresponding desktop tab button to switch content
+        const desktopTabBtn = document.querySelector(`.tab-btn[data-tab="${targetTab}"]`);
+        if (desktopTabBtn) {
+          desktopTabBtn.click();
+        }
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+  
+  // Sync desktop tabs back to mobile navigation active state
+  const tabs = document.querySelectorAll('.tab-btn');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const tabId = tab.getAttribute('data-tab');
+      const correspondingMobileBtn = document.querySelector(`.mobile-nav-btn[data-tab="${tabId}"]`);
+      if (correspondingMobileBtn) {
+        mobileNavBtns.forEach(b => b.classList.remove('active'));
+        correspondingMobileBtn.classList.add('active');
+      }
+    });
+  });
+
+  // Spectrum View Mode Toggles
+  const btnSpecCase = document.getElementById('spec-toggle-case');
+  const btnSpecAlts = document.getElementById('spec-toggle-alternatives');
+  const btnSpecFull = document.getElementById('spec-toggle-full');
+  
+  if (btnSpecCase && btnSpecAlts && btnSpecFull) {
+    const specToggles = [btnSpecCase, btnSpecAlts, btnSpecFull];
+    
+    btnSpecCase.addEventListener('click', () => {
+      specToggles.forEach(t => t.classList.remove('active'));
+      btnSpecCase.classList.add('active');
+      state.config.spectrumViewMode = 'case';
+      renderSpectrumMatrix();
+    });
+    
+    btnSpecAlts.addEventListener('click', () => {
+      specToggles.forEach(t => t.classList.remove('active'));
+      btnSpecAlts.classList.add('active');
+      state.config.spectrumViewMode = 'alternatives';
+      renderSpectrumMatrix();
+    });
+    
+    btnSpecFull.addEventListener('click', () => {
+      specToggles.forEach(t => t.classList.remove('active'));
+      btnSpecFull.classList.add('active');
+      state.config.spectrumViewMode = 'full';
+      renderSpectrumMatrix();
+    });
+  }
 
   // Demographics Inputs
   document.getElementById('patient-age').addEventListener('input', (e) => {
@@ -1082,6 +1156,13 @@ function renderCritiques() {
   
   const critiques = compileRegimenCritiques();
   
+  // Update warning badges
+  const proposed = Array.from(state.config.proposedRegimen);
+  const alertCount = proposed.length > 0
+    ? critiques.filter(c => c.type === 'warning' || c.type === 'danger').length
+    : 0;
+  updateAlertBadges(alertCount);
+  
   critiques.forEach((item, index) => {
     const card = document.createElement('div');
     card.className = `critique-card ${item.type}`;
@@ -1129,19 +1210,82 @@ function renderCritiques() {
   });
 }
 
+function updateAlertBadges(alertCount) {
+  const desktopBadge = document.getElementById('desktop-critique-badge');
+  const mobileBadge = document.getElementById('mobile-critique-badge');
+  
+  if (alertCount > 0) {
+    if (desktopBadge) {
+      desktopBadge.innerText = alertCount;
+      desktopBadge.classList.remove('hidden');
+    }
+    if (mobileBadge) {
+      mobileBadge.innerText = alertCount;
+      mobileBadge.classList.remove('hidden');
+    }
+  } else {
+    if (desktopBadge) {
+      desktopBadge.classList.add('hidden');
+    }
+    if (mobileBadge) {
+      mobileBadge.classList.add('hidden');
+    }
+  }
+}
+
 function renderSpectrumMatrix() {
   const table = document.getElementById('spectrum-matrix-table');
   table.innerHTML = '';
   
   const selectedSyndrome = state.config.selectedSyndrome;
+  const isDirected = state.config.treatmentMode === "directed";
   const syndromeBugs = SYNDROMES[selectedSyndrome].expectedPathogens;
   const activeDrugs = Array.from(state.config.proposedRegimen);
   
-  // Assemble visible columns: First Column is Pathogens, then proposed drugs, then remaining active database drugs to show alternatives.
-  const displayDrugs = [...activeDrugs];
-  Object.keys(ANTIBIOTICS).forEach(id => {
-    if (!displayDrugs.includes(id)) displayDrugs.push(id);
-  });
+  // Determine which bugs (rows) to display
+  let caseBugs = [...syndromeBugs];
+  if (isDirected && state.config.isolatedPathogen && !caseBugs.includes(state.config.isolatedPathogen)) {
+    caseBugs.push(state.config.isolatedPathogen);
+  }
+  
+  let displayBugs = [];
+  if (state.config.spectrumViewMode === 'case' || state.config.spectrumViewMode === 'alternatives') {
+    displayBugs = caseBugs;
+  } else {
+    // Full matrix: expected/isolated bugs first, then all others
+    displayBugs = [...caseBugs];
+    Object.keys(PATHOGENS).forEach(group => {
+      Object.keys(PATHOGENS[group].bugs).forEach(bugId => {
+        if (!displayBugs.includes(bugId)) displayBugs.push(bugId);
+      });
+    });
+  }
+  
+  // Determine which drugs (columns) to display
+  let displayDrugs = [];
+  if (state.config.spectrumViewMode === 'case') {
+    displayDrugs = activeDrugs;
+  } else {
+    // Proposed drugs first, then alternative drugs
+    displayDrugs = [...activeDrugs];
+    Object.keys(ANTIBIOTICS).forEach(id => {
+      if (!displayDrugs.includes(id)) displayDrugs.push(id);
+    });
+  }
+  
+  // Handle empty columns in Case view if no drugs proposed
+  if (displayDrugs.length === 0) {
+    const trEmpty = document.createElement('tr');
+    const tdEmpty = document.createElement('td');
+    tdEmpty.colSpan = 2;
+    tdEmpty.style.textAlign = 'center';
+    tdEmpty.style.padding = '2.5rem 1.5rem';
+    tdEmpty.style.color = 'var(--text-muted)';
+    tdEmpty.innerHTML = `No proposed antibiotics selected. <br><br>Add drugs in **Case Builder** to check coverage, or toggle **Compare Alternatives** above.`;
+    trEmpty.appendChild(tdEmpty);
+    table.appendChild(trEmpty);
+    return;
+  }
 
   // Table Header
   const thead = document.createElement('thead');
@@ -1154,7 +1298,6 @@ function renderSpectrumMatrix() {
   displayDrugs.forEach(drugId => {
     const th = document.createElement('th');
     th.innerText = ANTIBIOTICS[drugId].name;
-    // Highlight if selected in proposed
     if (activeDrugs.includes(drugId)) {
       th.style.color = 'var(--color-primary)';
       th.style.borderBottom = '2px solid var(--color-primary)';
@@ -1164,18 +1307,10 @@ function renderSpectrumMatrix() {
   thead.appendChild(trHeader);
   table.appendChild(thead);
 
-  // Table Body (Rows representing pathogens)
+  // Table Body
   const tbody = document.createElement('tbody');
   
-  // Prioritize showing expected bugs for this syndrome, then others
-  const allBugs = [...syndromeBugs];
-  Object.keys(PATHOGENS).forEach(group => {
-    Object.keys(PATHOGENS[group].bugs).forEach(bugId => {
-      if (!allBugs.includes(bugId)) allBugs.push(bugId);
-    });
-  });
-
-  allBugs.forEach(bugId => {
+  displayBugs.forEach(bugId => {
     let bugName = bugId;
     let isExpected = syndromeBugs.includes(bugId);
     

@@ -1,0 +1,12 @@
+{
+  "name": "microbiology-sandbox",
+  "version": "1.0.0",
+  "description": "Educational Microbiology Sandbox and ID Simulator",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "dev": "npx -y http-server -p 3000 -c-1"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
