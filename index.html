@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microbiology Sandbox | Educational ID Simulator</title>
+  <link rel="stylesheet" href="index.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-logo">
+      <span class="logo-icon">🔬</span>
+      <h1>Microbiology Sandbox</h1>
+      <span class="badge badge-primary">Educational ID Simulator</span>
+    </div>
+    <div class="header-stats">
+      <div class="stat-badge">
+        <span class="stat-label">Calculated Clearance:</span>
+        <span id="header-crcl-badge" class="stat-value text-success">Normal (>90 ml/min)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Dashboard Container -->
+  <main class="dashboard-grid">
+
+    <!-- COLUMN 1: CASE BUILDER (INPUTS) -->
+    <section class="dashboard-col col-inputs">
+
+      <!-- Demographic Calculator Toggle Card -->
+      <div class="card card-accordion">
+        <button type="button" class="accordion-trigger" id="toggle-demographics">
+          <span class="trigger-title">👤 Patient Physiology & Clearance <span class="badge-optional">(Optional)</span></span>
+          <span id="accordion-indicator" class="arrow-down"></span>
+        </button>
+        <div class="accordion-content hidden" id="demographics-panel">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="patient-age">Age (years)</label>
+              <input type="number" id="patient-age" min="1" max="120" value="40" placeholder="40">
+            </div>
+            <div class="form-group">
+              <label for="patient-sex">Biological Sex</label>
+              <select id="patient-sex">
+                <option value="male" selected>Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="patient-weight">Weight (kg)</label>
+              <input type="number" id="patient-weight" min="10" max="300" value="70" placeholder="70">
+            </div>
+            <div class="form-group">
+              <label for="patient-height">Height (cm)</label>
+              <input type="number" id="patient-height" min="100" max="250" value="175" placeholder="175">
+            </div>
+            <div class="form-group">
+              <label for="patient-creatinine">Serum Creatinine (µmol/L)</label>
+              <input type="number" id="patient-creatinine" min="10" max="1000" value="80" placeholder="80">
+            </div>
+            <div class="form-group flex-checkbox">
+              <input type="checkbox" id="use-adjusted-weight" checked>
+              <label for="use-adjusted-weight">Use Adjusted Weight if Obese</label>
+            </div>
+          </div>
+          <div class="calculator-results" id="crcl-output-box">
+            <div class="result-metric">
+              <span class="metric-label">Cockcroft-Gault CrCl</span>
+              <span class="metric-value" id="crcl-value">110 ml/min</span>
+            </div>
+            <div class="result-explanation" id="crcl-explanation">
+              Using Actual Body Weight (70kg). Patient has normal renal clearance.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Infection Details Card -->
+      <div class="card">
+        <h2 class="card-title"><span class="card-icon">⚡</span> 1. Infection Details</h2>
+        <div class="form-grid">
+          <div class="form-group col-span-2">
+            <label for="infection-syndrome">Clinical Syndrome / Infection Type</label>
+            <select id="infection-syndrome">
+              <option value="cap" selected>Community-Acquired Pneumonia (CAP)</option>
+              <option value="hap">Hospital-Acquired Pneumonia (HAP)</option>
+              <option value="uti_cystitis">Acute Uncomplicated Cystitis</option>
+              <option value="uti_pyelonephritis">Acute Pyelonephritis / Complicated UTI</option>
+              <option value="cellulitis">Cellulitis / Skin & Soft Tissue Infection</option>
+              <option value="meningitis">Acute Bacterial Meningitis</option>
+              <option value="intra_abdominal">Intra-abdominal Infection (Peritonitis / Abscess)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Microbiology Card -->
+      <div class="card">
+        <div class="card-header-flex">
+          <h2 class="card-title"><span class="card-icon">🦠</span> 2. Microbiology & Sensitivities</h2>
+          <div class="toggle-group">
+            <button class="btn-toggle active" id="mode-empiric">Empiric</button>
+            <button class="btn-toggle" id="mode-directed">Directed (Isolate)</button>
+          </div>
+        </div>
+
+        <div id="directed-fields" class="directed-container hidden">
+          <div class="form-group">
+            <label for="isolated-pathogen">Isolated Pathogen</label>
+            <select id="isolated-pathogen">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Resistance Presets (Quick Setup)</label>
+            <div class="preset-buttons">
+              <button type="button" class="btn btn-secondary btn-xs" id="preset-wild">Wild Type (Sensitive)</button>
+              <button type="button" class="btn btn-secondary btn-xs" id="preset-mrsa">MRSA</button>
+              <button type="button" class="btn btn-secondary btn-xs" id="preset-esbl">ESBL producing</button>
+              <button type="button" class="btn btn-secondary btn-xs" id="preset-vre">VRE</button>
+              <button type="button" class="btn btn-secondary btn-xs" id="preset-cpe">CPE (Carbapenemase-producer)</button>
+            </div>
+          </div>
+
+          <div class="antibiogram-wrapper">
+            <label>Antibiogram Sensitivity Matrix (Custom Override)</label>
+            <div class="antibiogram-table-container">
+              <table class="antibiogram-table">
+                <thead>
+                  <tr>
+                    <th>Antibiotic</th>
+                    <th class="text-center">S (Susceptible, standard dose)</th>
+                    <th class="text-center">I (Susceptible, increased exposure)</th>
+                    <th class="text-center">R (Resistant)</th>
+                  </tr>
+                </thead>
+                <tbody id="antibiogram-tbody">
+                  <!-- Dynamically populated with sensitivity toggles -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="empiric-info-box" class="info-alert">
+          <strong>Empirical Mode:</strong> Rules engine will critique coverage against the expected pathogens for the chosen syndrome. NICE and UK SMI recommendations are displayed on the right.
+        </div>
+      </div>
+
+      <!-- Prescriptions / Regimen Cocktails Card -->
+      <div class="card">
+        <h2 class="card-title"><span class="card-icon">💊</span> 3. Regimen & Stewardship</h2>
+        
+        <!-- Current Regimen Selection (Stewardship Compare) -->
+        <div class="regimen-section">
+          <div class="regimen-header">
+            <span class="regimen-title-text">Current Regimen (Patient is on this)</span>
+            <button type="button" class="btn btn-link btn-xs" id="clear-current-regimen">Clear</button>
+          </div>
+          <div class="antibiotic-selector-grid" id="current-antibiotic-list">
+            <!-- Populated with checkboxes for multiple drug selection -->
+          </div>
+        </div>
+
+        <hr class="card-divider">
+
+        <!-- Proposed Regimen / Intervention Selection -->
+        <div class="regimen-section">
+          <div class="regimen-header">
+            <span class="regimen-title-text">Proposed Regimen (Switch to this)</span>
+            <button type="button" class="btn btn-link btn-xs" id="clear-proposed-regimen">Clear</button>
+          </div>
+          <div class="antibiotic-selector-grid" id="proposed-antibiotic-list">
+            <!-- Populated with checkboxes for multiple drug selection -->
+          </div>
+        </div>
+
+        <!-- Dosing Parameter Options for Regimen Critique -->
+        <div class="dosing-inputs-grid">
+          <div class="form-group">
+            <label for="proposed-drug-dose">Specific Drug to Dose-Check</label>
+            <select id="proposed-drug-dose">
+              <!-- Dynamically populated from proposed list -->
+            </select>
+          </div>
+          <div class="form-grid-three">
+            <div class="form-group">
+              <label for="prescribed-dose">Dose (mg or g)</label>
+              <input type="text" id="prescribed-dose" value="1g" placeholder="e.g. 1g, 500mg">
+            </div>
+            <div class="form-group">
+              <label for="prescribed-freq">Frequency</label>
+              <select id="prescribed-freq">
+                <option value="Q4h">Q4h (6x daily)</option>
+                <option value="Q8h" selected>Q8h (3x daily)</option>
+                <option value="Q12h">Q12h (2x daily)</option>
+                <option value="Q24h">Q24h (1x daily)</option>
+                <option value="Q36h">Q36h (Every 36h)</option>
+                <option value="Q48h">Q48h (Every 48h)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="prescribed-route">Route</label>
+              <select id="prescribed-route">
+                <option value="IV" selected>IV</option>
+                <option value="PO">PO</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLUMN 2: CRITIQUE DASHBOARD (OUTPUTS) -->
+    <section class="dashboard-col col-outputs">
+      
+      <!-- Tabs Navigation -->
+      <nav class="tabs-nav">
+        <button class="tab-btn active" data-tab="tab-critique">📋 Educational Critique</button>
+        <button class="tab-btn" data-tab="tab-spectrum">📊 Spectrum Grid</button>
+        <button class="tab-btn" data-tab="tab-lookup">🔍 Quick Lookup</button>
+        <button class="tab-btn" data-tab="tab-guidelines">📖 Guidelines</button>
+      </nav>
+
+      <!-- TAB CONTENT: CRITIQUE -->
+      <div class="tab-content active" id="tab-critique">
+        <div class="critique-container" id="critique-cards-container">
+          <!-- Dynamically populated warnings and alerts cards -->
+        </div>
+      </div>
+
+      <!-- TAB CONTENT: SPECTRUM GRID -->
+      <div class="tab-content" id="tab-spectrum">
+        <div class="spectrum-info">
+          <h3>Interactive Coverage Matrix</h3>
+          <p class="text-muted">Visualizes the standard susceptibility profiles of the pathogens in this case against selected/available agents.</p>
+          <div class="spectrum-legend">
+            <span class="legend-item"><span class="legend-box covered"></span> Susceptible, standard dose (2)</span>
+            <span class="legend-item"><span class="legend-box partial"></span> Susceptible, increased exposure (1)</span>
+            <span class="legend-item"><span class="legend-box resistant"></span> Resistant (0)</span>
+          </div>
+        </div>
+        <div class="matrix-scroll-wrapper">
+          <table class="spectrum-matrix" id="spectrum-matrix-table">
+            <!-- Dynamically populated -->
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB CONTENT: QUICK LOOKUP -->
+      <div class="tab-content" id="tab-lookup">
+        <div class="lookup-card">
+          <h3>Dual-Path Drug-Bug Lookup</h3>
+          <p class="text-muted">Query the standard empirical drug susceptibility database instantly.</p>
+          
+          <div class="lookup-toggle-container">
+            <button class="btn btn-secondary active" id="lookup-by-drug-btn">Search by Antibiotic</button>
+            <button class="btn btn-secondary" id="lookup-by-bug-btn">Search by Pathogen</button>
+          </div>
+
+          <!-- Search Form -->
+          <div class="form-group lookup-search-group">
+            <label for="lookup-select" id="lookup-select-label">Select Antibiotic:</label>
+            <select id="lookup-select" class="form-control">
+              <!-- Dynamically populated based on active lookup path -->
+            </select>
+          </div>
+
+          <!-- Results -->
+          <div class="lookup-results" id="lookup-results-box">
+            <!-- Dynamically populated results list -->
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB CONTENT: GUIDELINES -->
+      <div class="tab-content" id="tab-guidelines">
+        <div class="guideline-card" id="nice-guideline-box">
+          <div class="guideline-badge nice-header">NICE Guidelines Recommendation</div>
+          <div class="guideline-body" id="nice-guideline-text">
+            <!-- Dynamically loaded guideline content -->
+          </div>
+        </div>
+        <div class="guideline-card" id="smi-guideline-box">
+          <div class="guideline-badge smi-header">UK Standards for Microbiology Investigations (SMIs)</div>
+          <div class="guideline-body" id="smi-guideline-text">
+            <!-- Dynamically loaded guideline content -->
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>Educational Microbiology Sandbox &copy; 2026. Designed for clinical training purposes. Do not use for patient care decision-making.</p>
+  </footer>
+
+  <!-- App Main script -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
