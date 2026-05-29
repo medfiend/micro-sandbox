@@ -1337,3 +1337,590 @@ select:focus {
   color: var(--text-muted);
 }
 
+/* Premium Custom CSS Tooltips */
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translate(-50%, 4px);
+  background: hsla(224, 25%, 5%, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-light);
+  color: var(--text-main);
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1000;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+  box-shadow: var(--shadow-lg), 0 5px 15px rgba(0, 0, 0, 0.4);
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+[data-tooltip]:hover::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* --- WIZARD STEPPER PROGRESS BAR --- */
+.stepper-outer-container {
+  padding: 1rem 2rem 0.5rem 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.wizard-stepper {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1rem 2rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.wizard-stepper::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 3rem;
+  right: 3rem;
+  height: 2px;
+  background: var(--border-light);
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.step-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-main);
+  border: 2px solid var(--border-light);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all var(--transition-normal);
+}
+
+.step-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: color var(--transition-normal);
+}
+
+/* Active Step Styling */
+.step-indicator.active .step-number {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+  box-shadow: var(--shadow-glow);
+}
+
+.step-indicator.active .step-label {
+  color: #fff;
+}
+
+/* Completed Step Styling */
+.step-indicator.completed .step-number {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  color: #fff;
+}
+
+.step-indicator.completed .step-label {
+  color: var(--color-success);
+}
+
+/* --- STEP PANEL VISIBILITY --- */
+.step-panel {
+  display: none;
+  animation: fadeIn var(--transition-normal) forwards;
+}
+
+body.step-1 .step-panel-1 { display: block; }
+body.step-2 .step-panel-2 { display: block; }
+body.step-3 .step-panel-3 { display: block; }
+body.step-4 .step-panel-4 { display: block; }
+
+/* Hide summary column on Step 4 to allow full width output, or adjust grid */
+body.step-4 .dashboard-grid {
+  grid-template-columns: 1fr;
+}
+body.step-4 .col-summary {
+  display: none !important;
+}
+
+/* --- STEP 1: SYNDROMES & SEARCH --- */
+.search-wrapper {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  background: var(--bg-input);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  color: #fff;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+#clear-syndrome-search {
+  position: absolute;
+  right: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.syndrome-list-system {
+  margin-bottom: 1.5rem;
+}
+
+.syndrome-list-system h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.syndrome-items-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.syndrome-item {
+  background: hsla(224, 25%, 15%, 0.3);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.25rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all var(--transition-fast);
+}
+
+.syndrome-item:hover {
+  background: var(--bg-card-hover);
+  border-color: hsla(224, 15%, 60%, 0.2);
+  transform: translateX(3px);
+}
+
+.syndrome-item.active {
+  background: hsla(192, 95%, 45%, 0.12);
+  border-color: var(--color-primary);
+  box-shadow: inset 0 0 10px hsla(192, 95%, 45%, 0.2);
+}
+
+.syndrome-item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.syndrome-item-name {
+  font-weight: 600;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.syndrome-item-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+.syndrome-select-indicator {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+}
+
+.syndrome-item.active .syndrome-select-indicator {
+  color: var(--color-primary);
+}
+
+/* --- STEP 2: MICROBIOLOGY DIRECTED MODIFIER --- */
+.toggle-group-wizard {
+  display: flex;
+  background: var(--bg-input);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  width: fit-content;
+  margin-top: 1rem;
+}
+
+.add-pathogen-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.add-pathogen-row select {
+  flex-grow: 1;
+}
+
+.added-isolates-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.isolate-card {
+  background: hsla(224, 25%, 6%, 0.4);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.isolate-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.isolate-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* --- STEP 3: CURRENT DRUGS & DOSING EXPANSIONS --- */
+.current-drugs-checkbox-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.drug-checkbox-card {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: hsla(224, 25%, 15%, 0.2);
+  transition: all var(--transition-normal);
+}
+
+.drug-checkbox-card.checked {
+  border-color: var(--color-primary);
+  background: hsla(192, 95%, 45%, 0.05);
+}
+
+.drug-checkbox-header-row {
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.drug-checkbox-header-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+}
+
+.drug-name-text {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.drug-sub-dosing-form {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--border-light);
+  background: hsla(224, 25%, 6%, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  animation: slideDown 0.25s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0; overflow: hidden; }
+  to { opacity: 1; max-height: 150px; }
+}
+
+/* --- WIZARD NAVIGATION FOOTER --- */
+.wizard-nav-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  border-top: 1px solid var(--border-light);
+  padding-top: 1.5rem;
+}
+
+.btn-nav {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+}
+
+/* --- DESKTOP STICKY SUMMARY COLUMN --- */
+.sticky-summary {
+  position: sticky;
+  top: 6.5rem;
+  height: fit-content;
+}
+
+.summary-card {
+  padding: 1.25rem;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+}
+
+.card-header-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 0.75rem;
+}
+
+.card-header-summary h3 {
+  font-size: 1rem;
+  color: #fff;
+  font-weight: 700;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.summary-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  font-weight: 700;
+}
+
+.summary-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.summary-subtext {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.summary-subtext.list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-left: 0.5rem;
+  border-left: 1px solid var(--border-light);
+  margin-top: 0.2rem;
+}
+
+.summary-divider {
+  border: 0;
+  height: 1px;
+  background: var(--border-light);
+  margin: 1rem 0;
+}
+
+.summary-critique-alert {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: hsla(224, 25%, 6%, 0.5);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  align-items: center;
+}
+
+.alert-icon {
+  font-size: 1.25rem;
+}
+
+.alert-message {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* --- STEP 4: REGIMEN COMPARISON CARDS --- */
+.comparison-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.comparison-column {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.column-current {
+  border-left: 4px solid var(--color-danger);
+  background: hsla(352, 85%, 55%, 0.03);
+}
+
+.column-recommended {
+  border-left: 4px solid var(--color-success);
+  background: hsla(142, 70%, 45%, 0.03);
+}
+
+.comparison-column h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.column-current h3 { color: var(--color-danger); }
+.column-recommended h3 { color: var(--color-success); }
+
+.comparison-prescription-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.comparison-prescription-item {
+  background: hsla(224, 25%, 6%, 0.4);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 0.6rem 0.85rem;
+  font-size: 0.85rem;
+}
+
+.comparison-drug-name {
+  font-weight: 600;
+  color: #fff;
+}
+
+.comparison-drug-details {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.comparison-rationale-list {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.comparison-rationale-list li {
+  font-size: 0.8rem;
+  position: relative;
+  padding-left: 1.25rem;
+  line-height: 1.4;
+  color: var(--text-main);
+}
+
+.column-current .comparison-rationale-list li::before {
+  content: '❌';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 0.75rem;
+}
+
+.column-recommended .comparison-rationale-list li::before {
+  content: '👉';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 0.75rem;
+}
+
+.comparison-rationale-title {
+  font-weight: 600;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+/* Adjust wizard col width vs sticky summary */
+.col-wizard {
+  flex: 1.3;
+}
+.col-summary {
+  flex: 0.7;
+}
+
+/* Mobile responsive layout fixes for wizard */
+@media (max-width: 1024px) {
+  .wizard-stepper {
+    padding: 0.75rem 1rem;
+  }
+  .wizard-stepper::before {
+    left: 2rem;
+    right: 2rem;
+  }
+  .step-label {
+    display: none; /* Hide label on mobile to save space */
+  }
+  body.step-4 .dashboard-grid {
+    padding-bottom: 80px; /* padding for mobile bottom nav */
+  }
+  .col-summary {
+    display: none !important; /* Hide summary column on mobile */
+  }
+  .comparison-card-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+
+
+

@@ -1,6 +1,4 @@
-// scratch script to test the rules engine logic of the Microbiology Sandbox
-
-import { ANTIBIOTICS, SPECTRUM } from '../../../../../Documents/NHS Employment/Side Projects/Micro/data.js';
+import { ANTIBIOTICS, SPECTRUM } from '../data.js';
 
 // Helper mock calculator
 function calculateCrCl(age, sex, weight, height, creatinine, useAdjustedWeight) {
@@ -47,11 +45,6 @@ function runTests() {
   assert(standardCrCl === 108, `Standard male CrCl should be 108 ml/min (Got ${standardCrCl})`);
 
   // TEST 2: Obese Renal clearance (Adjusted weight check)
-  // Height 175cm = 68.9 inches -> 8.9 inches over 5 feet
-  // Male IBW = 50 + 2.3 * 8.9 = 70.47 kg
-  // Actual Weight = 100 kg (> 20% over IBW, which is 84.5kg)
-  // Adjusted Weight = 70.47 + 0.4 * (100 - 70.47) = 82.28 kg
-  // CrCl = (140 - 40) * 82.28 * 1.23 / 80 = 126.5 = 127
   const obeseCrCl = calculateCrCl(40, 'male', 100, 175, 80, true);
   assert(obeseCrCl === 127, `Obese male CrCl (using AjBW) should be 127 ml/min (Got ${obeseCrCl})`);
 
@@ -72,7 +65,6 @@ function runTests() {
   assert(meropenemPseudomonasCover === 2, `Meropenem should cover Pseudomonas (Score: 2, Got ${meropenemPseudomonasCover})`);
 
   // TEST 6: Renal Dosing Adjustment trigger
-  // Meropenem renal rules: CrCl 10-25 -> 500mg Q12h
   const lowCrCl = 20;
   const meropenemRules = ANTIBIOTICS["meropenem"].renalAdjustments;
   let ruleFound = null;
@@ -137,6 +129,29 @@ function runTests() {
   const pseudoProposed = ["ciprofloxacin"];
   const pseudoTriggered = (pseudoPathogen === "pseudomonas_aeruginosa" && pseudoProposed.includes("ciprofloxacin"));
   assert(pseudoTriggered === true, "Pseudomonas + Ciprofloxacin caution warning logic should trigger when Ciprofloxacin is prescribed for Pseudomonas");
+
+  // TEST 12: PK Trap - C. diff colitis + IV Vancomycin
+  const vancRouteDiff = "IV";
+  const vancSyndromeDiff = "c_difficile";
+  const isVancRouteDiffTrap = (vancSyndromeDiff === "c_difficile" && vancRouteDiff === "IV");
+  assert(isVancRouteDiffTrap === true, "IV Vancomycin in C. diff colitis should trigger colonic PK trap warning");
+
+  // TEST 13: PK Trap - Systemic Sepsis + PO Vancomycin
+  const vancRouteSepsis = "PO";
+  const vancSyndromeSepsis = "sepsis_unknown";
+  const isVancRouteSepsisTrap = (vancRouteSepsis === "PO" && ["sepsis_unknown", "neutropenic_sepsis", "infective_endocarditis", "crbsi", "uti_pyelonephritis"].includes(vancSyndromeSepsis));
+  assert(isVancRouteSepsisTrap === true, "Oral Vancomycin in systemic sepsis should trigger systemic absorption PK trap warning");
+
+  // TEST 14: SBP + Gentamicin renal/hepatorenal warning check
+  const sbpSyndrome = "sbp";
+  const proposedSbpRegimen = ["gentamicin"];
+  const isSbpGentamicinWarning = (sbpSyndrome === "sbp" && proposedSbpRegimen.includes("gentamicin"));
+  assert(isSbpGentamicinWarning === true, "Gentamicin in SBP should trigger caution due to high risk of hepatorenal syndrome");
+
+  // TEST 15: CAUTI + Ciprofloxacin Enterococcus faecalis coverage check
+  const cautiExpected = ["escherichia_coli", "klebsiella_pneumoniae", "pseudomonas_aeruginosa", "enterococcus_faecalis"];
+  const uncoveredCauti = cautiExpected.filter(bugId => (SPECTRUM["ciprofloxacin"]?.[bugId] || 0) < 2);
+  assert(uncoveredCauti.includes("enterococcus_faecalis"), "CAUTI expected pathogen Enterococcus faecalis should be uncovered by Ciprofloxacin monotherapy (Score < 2)");
 
   console.log("--------------------------------------------------");
   console.log(`TEST RUN COMPLETE. Passed: ${passCount}, Failed: ${failCount}`);

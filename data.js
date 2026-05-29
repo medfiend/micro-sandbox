@@ -2,14 +2,15 @@
 
 export const PATHOGENS = {
   "gram_negative_bacilli": {
-    name: "Gram-Negative Bacilli",
+    name: "Gram-Negative Rods & Cocci",
     bugs: {
       "escherichia_coli": "Escherichia coli",
       "klebsiella_pneumoniae": "Klebsiella pneumoniae",
       "pseudomonas_aeruginosa": "Pseudomonas aeruginosa",
       "haemophilus_influenzae": "Haemophilus influenzae",
       "enterobacter_cloacae": "Enterobacter cloacae",
-      "proteus_mirabilis": "Proteus mirabilis"
+      "proteus_mirabilis": "Proteus mirabilis",
+      "neisseria_gonorrhoeae": "Neisseria gonorrhoeae"
     }
   },
   "gram_positive_cocci": {
@@ -28,6 +29,7 @@ export const PATHOGENS = {
     bugs: {
       "bacteroides_fragilis": "Bacteroides fragilis",
       "clostridium_perfringens": "Clostridium perfringens",
+      "clostridium_difficile": "Clostridium difficile",
       "peptostreptococcus_spp": "Peptostreptococcus spp."
     }
   },
@@ -36,7 +38,8 @@ export const PATHOGENS = {
     bugs: {
       "mycoplasma_pneumoniae": "Mycoplasma pneumoniae",
       "chlamydophila_pneumoniae": "Chlamydophila pneumoniae",
-      "legionella_pneumophila": "Legionella pneumophila"
+      "legionella_pneumophila": "Legionella pneumophila",
+      "chlamydia_trachomatis": "Chlamydia trachomatis"
     }
   }
 };
@@ -156,6 +159,175 @@ export const SYNDROMES = {
       "staphylococcus_aureus_mssa",
       "streptococcus_pneumoniae"
     ]
+  },
+  "copd_exacerbation": {
+    name: "Acute Exacerbation of COPD",
+    site: "Respiratory System",
+    description: "Acute worsening of respiratory symptoms in a patient with COPD, typically requiring empirical oral antibiotics.",
+    expectedPathogens: [
+      "haemophilus_influenzae",
+      "streptococcus_pneumoniae",
+      "pseudomonas_aeruginosa"
+    ]
+  },
+  "tonsillitis": {
+    name: "Acute Sore Throat / Tonsillitis",
+    site: "Respiratory System",
+    description: "Bacterial pharyngitis/tonsillitis typically caused by Group A Streptococcus, requiring antibiotics if Centor criteria are met.",
+    expectedPathogens: [
+      "streptococcus_pyogenes"
+    ]
+  },
+  "sinusitis": {
+    name: "Acute Sinusitis",
+    site: "Respiratory System",
+    description: "Bacterial sinus infection, considered when symptoms last >10 days or worsen after initial improvement.",
+    expectedPathogens: [
+      "streptococcus_pneumoniae",
+      "haemophilus_influenzae"
+    ]
+  },
+  "bite_infection": {
+    name: "Human / Animal Bite Infection",
+    site: "Skin, Bone & Joint (MSK)",
+    description: "Bite wounds introducing oral flora, frequently polymicrobial, requiring early empirical coverage.",
+    expectedPathogens: [
+      "staphylococcus_aureus_mssa",
+      "streptococcus_pyogenes",
+      "bacteroides_fragilis",
+      "escherichia_coli"
+    ]
+  },
+  "sepsis_unknown": {
+    name: "Sepsis of Unknown Origin",
+    site: "Systemic / Sepsis",
+    description: "Severe systemic inflammatory response to infection of unidentified source, requiring immediate broad-spectrum IV therapy.",
+    expectedPathogens: [
+      "escherichia_coli",
+      "klebsiella_pneumoniae",
+      "pseudomonas_aeruginosa",
+      "staphylococcus_aureus_mssa",
+      "staphylococcus_aureus_mrsa",
+      "streptococcus_pneumoniae"
+    ]
+  },
+  "infective_endocarditis": {
+    name: "Infective Endocarditis (Empirical)",
+    site: "Systemic / Sepsis",
+    description: "Serious bacterial infection of the heart valves, requiring high-dose bactericidal combinations.",
+    expectedPathogens: [
+      "staphylococcus_aureus_mssa",
+      "staphylococcus_aureus_mrsa",
+      "enterococcus_faecalis",
+      "streptococcus_pneumoniae"
+    ]
+  },
+  "c_difficile": {
+    name: "Clostridioides difficile Colitis",
+    site: "Gastrointestinal & Abdominal",
+    description: "Toxin-producing bacterial infection of the colon, secondary to broad-spectrum antibiotic exposure.",
+    expectedPathogens: [
+      "clostridium_difficile"
+    ]
+  },
+  "bronchitis": {
+    name: "Acute Bronchitis (Infective Exacerbation)",
+    site: "Respiratory System",
+    description: "Acute inflammation of the bronchi, usually viral, but antibiotics considered if systemically unwell or high risk.",
+    expectedPathogens: [
+      "streptococcus_pneumoniae",
+      "haemophilus_influenzae"
+    ]
+  },
+  "cauti": {
+    name: "Catheter-Associated Urinary Tract Infection (CAUTI)",
+    site: "Urinary Tract",
+    description: "Symptomatic infection of the urinary tract in a patient with a catheter, often involving biofilms and resistant pathogens.",
+    expectedPathogens: [
+      "escherichia_coli",
+      "klebsiella_pneumoniae",
+      "pseudomonas_aeruginosa",
+      "enterococcus_faecalis"
+    ]
+  },
+  "prostatitis": {
+    name: "Acute Prostatitis",
+    site: "Urinary Tract",
+    description: "Acute bacterial infection of the prostate gland, requiring long-term agents with high prostatic fluid penetration.",
+    expectedPathogens: [
+      "escherichia_coli",
+      "klebsiella_pneumoniae",
+      "proteus_mirabilis",
+      "pseudomonas_aeruginosa"
+    ]
+  },
+  "diverticulitis": {
+    name: "Acute Diverticulitis",
+    site: "Gastrointestinal & Abdominal",
+    description: "Inflammation of diverticula in the colon wall, requiring anaerobic and enteric Gram-negative coverage.",
+    expectedPathogens: [
+      "escherichia_coli",
+      "klebsiella_pneumoniae",
+      "bacteroides_fragilis",
+      "enterococcus_faecalis"
+    ]
+  },
+  "sbp": {
+    name: "Spontaneous Bacterial Peritonitis (SBP)",
+    site: "Gastrointestinal & Abdominal",
+    description: "Infection of ascitic fluid in patients with cirrhosis, occurring in the absence of an obvious intra-abdominal source.",
+    expectedPathogens: [
+      "escherichia_coli",
+      "klebsiella_pneumoniae",
+      "streptococcus_pneumoniae"
+    ]
+  },
+  "diabetic_foot": {
+    name: "Diabetic Foot Infection (Moderate/Severe)",
+    site: "Skin, Bone & Joint (MSK)",
+    description: "Infection in the foot of a patient with diabetes, frequently polymicrobial and involving tissue necrosis.",
+    expectedPathogens: [
+      "staphylococcus_aureus_mssa",
+      "staphylococcus_aureus_mrsa",
+      "streptococcus_pyogenes",
+      "escherichia_coli",
+      "pseudomonas_aeruginosa",
+      "bacteroides_fragilis"
+    ]
+  },
+  "necrotising_fasciitis": {
+    name: "Necrotising Fasciitis (Emergency)",
+    site: "Skin, Bone & Joint (MSK)",
+    description: "Rapidly progressive, life-threatening destructive infection of the fascia and subcutaneous tissue. A surgical emergency.",
+    expectedPathogens: [
+      "streptococcus_pyogenes",
+      "clostridium_perfringens",
+      "bacteroides_fragilis",
+      "escherichia_coli"
+    ]
+  },
+  "pid": {
+    name: "Pelvic Inflammatory Disease (PID)",
+    site: "Genital & Pelvic",
+    description: "Infection of the upper female genital tract, typically sexually transmitted but frequently polymicrobial.",
+    expectedPathogens: [
+      "chlamydia_trachomatis",
+      "neisseria_gonorrhoeae",
+      "bacteroides_fragilis",
+      "escherichia_coli",
+      "streptococcus_pyogenes"
+    ]
+  },
+  "crbsi": {
+    name: "Catheter-Related Bloodstream Infection (CRBSI)",
+    site: "Systemic / Sepsis",
+    description: "Bacteremia arising from an indwelling vascular catheter, requiring coverage of skin flora and Gram-negatives.",
+    expectedPathogens: [
+      "staphylococcus_aureus_mssa",
+      "staphylococcus_aureus_mrsa",
+      "pseudomonas_aeruginosa",
+      "enterococcus_faecalis"
+    ]
   }
 };
 
@@ -179,7 +351,8 @@ export const ANTIBIOTICS = {
     comments: "First-line UK choice for skin/soft tissue infections. Resistant to staphylococcal beta-lactamases."
   },
   "co_amoxiclav": {
-    name: "Co-amoxiclav (Amoxicillin/Clavulanate)",
+    name: "Co-amoxiclav",
+    subtext: "Combination of Amoxicillin & Clavulanic acid",
     class: "Penicillin + Beta-Lactamase Inhibitor",
     spectrumScore: 5,
     standardDose: "1.2g IV Q8h or 625mg PO Q8h",
@@ -191,7 +364,8 @@ export const ANTIBIOTICS = {
     comments: "Clavulanate addition restores activity against MSSA and beta-lactamase-producing Gram-negatives. No Pseudomonas coverage."
   },
   "piperacillin_tazobactam": {
-    name: "Piperacillin/Tazobactam (Tazocin)",
+    name: "Piperacillin/Tazobactam",
+    subtext: "Brand name: Tazocin (Piperacillin + Tazobactam)",
     class: "Antipseudomonal Penicillin + BLI",
     spectrumScore: 8,
     standardDose: "4.5g IV Q8h",
@@ -330,12 +504,13 @@ export const ANTIBIOTICS = {
 export const SPECTRUM = {
   // Key: Antibiotic ID, Value: Map of Pathogen ID -> Coverage Code (2 = Covered, 1 = Partial, 0 = Not Covered)
   "amoxicillin": {
-    "escherichia_coli": 1, // Susceptible wild-type, but high rates of acquired resistance (BLI needed)
-    "klebsiella_pneumoniae": 0, // Intrinisically resistant
+    "escherichia_coli": 1,
+    "klebsiella_pneumoniae": 0,
     "pseudomonas_aeruginosa": 0,
     "haemophilus_influenzae": 2,
     "enterobacter_cloacae": 0,
     "proteus_mirabilis": 2,
+    "neisseria_gonorrhoeae": 0,
     "streptococcus_pneumoniae": 2,
     "staphylococcus_aureus_mssa": 0,
     "staphylococcus_aureus_mrsa": 0,
@@ -344,10 +519,12 @@ export const SPECTRUM = {
     "enterococcus_faecium": 0,
     "bacteroides_fragilis": 0,
     "clostridium_perfringens": 2,
+    "clostridium_difficile": 0,
     "peptostreptococcus_spp": 2,
     "mycoplasma_pneumoniae": 0,
     "chlamydophila_pneumoniae": 0,
-    "legionella_pneumophila": 0
+    "legionella_pneumophila": 0,
+    "chlamydia_trachomatis": 0
   },
   "flucloxacillin": {
     "escherichia_coli": 0,
@@ -356,6 +533,7 @@ export const SPECTRUM = {
     "haemophilus_influenzae": 0,
     "enterobacter_cloacae": 0,
     "proteus_mirabilis": 0,
+    "neisseria_gonorrhoeae": 0,
     "streptococcus_pneumoniae": 2,
     "staphylococcus_aureus_mssa": 2,
     "staphylococcus_aureus_mrsa": 0,
@@ -364,18 +542,21 @@ export const SPECTRUM = {
     "enterococcus_faecium": 0,
     "bacteroides_fragilis": 0,
     "clostridium_perfringens": 1,
+    "clostridium_difficile": 0,
     "peptostreptococcus_spp": 2,
     "mycoplasma_pneumoniae": 0,
     "chlamydophila_pneumoniae": 0,
-    "legionella_pneumophila": 0
+    "legionella_pneumophila": 0,
+    "chlamydia_trachomatis": 0
   },
   "co_amoxiclav": {
     "escherichia_coli": 2,
     "klebsiella_pneumoniae": 2,
     "pseudomonas_aeruginosa": 0,
     "haemophilus_influenzae": 2,
-    "enterobacter_cloacae": 0, // AmpC inducible risk
+    "enterobacter_cloacae": 0,
     "proteus_mirabilis": 2,
+    "neisseria_gonorrhoeae": 2,
     "streptococcus_pneumoniae": 2,
     "staphylococcus_aureus_mssa": 2,
     "staphylococcus_aureus_mrsa": 0,
@@ -384,18 +565,21 @@ export const SPECTRUM = {
     "enterococcus_faecium": 0,
     "bacteroides_fragilis": 2,
     "clostridium_perfringens": 2,
+    "clostridium_difficile": 0,
     "peptostreptococcus_spp": 2,
     "mycoplasma_pneumoniae": 0,
     "chlamydophila_pneumoniae": 0,
-    "legionella_pneumophila": 0
+    "legionella_pneumophila": 0,
+    "chlamydia_trachomatis": 0
   },
   "piperacillin_tazobactam": {
     "escherichia_coli": 2,
     "klebsiella_pneumoniae": 2,
     "pseudomonas_aeruginosa": 2,
     "haemophilus_influenzae": 2,
-    "enterobacter_cloacae": 1, // Can induce AmpC resistance during therapy
+    "enterobacter_cloacae": 1,
     "proteus_mirabilis": 2,
+    "neisseria_gonorrhoeae": 2,
     "streptococcus_pneumoniae": 2,
     "staphylococcus_aureus_mssa": 2,
     "staphylococcus_aureus_mrsa": 0,
@@ -404,18 +588,21 @@ export const SPECTRUM = {
     "enterococcus_faecium": 0,
     "bacteroides_fragilis": 2,
     "clostridium_perfringens": 2,
+    "clostridium_difficile": 0,
     "peptostreptococcus_spp": 2,
     "mycoplasma_pneumoniae": 0,
     "chlamydophila_pneumoniae": 0,
-    "legionella_pneumophila": 0
+    "legionella_pneumophila": 0,
+    "chlamydia_trachomatis": 0
   },
   "ceftriaxone": {
     "escherichia_coli": 2,
     "klebsiella_pneumoniae": 2,
     "pseudomonas_aeruginosa": 0,
     "haemophilus_influenzae": 2,
-    "enterobacter_cloacae": 1, // High risk of selecting for derepressed AmpC mutants
+    "enterobacter_cloacae": 1,
     "proteus_mirabilis": 2,
+    "neisseria_gonorrhoeae": 2,
     "streptococcus_pneumoniae": 2,
     "staphylococcus_aureus_mssa": 2,
     "staphylococcus_aureus_mrsa": 0,
@@ -424,10 +611,12 @@ export const SPECTRUM = {
     "enterococcus_faecium": 0,
     "bacteroides_fragilis": 0,
     "clostridium_perfringens": 2,
+    "clostridium_difficile": 0,
     "peptostreptococcus_spp": 2,
     "mycoplasma_pneumoniae": 0,
     "chlamydophila_pneumoniae": 0,
-    "legionella_pneumophila": 0
+    "legionella_pneumophila": 0,
+    "chlamydia_trachomatis": 0
   },
   "ceftazidime": {
     "escherichia_coli": 2,
@@ -436,18 +625,21 @@ export const SPECTRUM = {
     "haemophilus_influenzae": 2,
     "enterobacter_cloacae": 1,
     "proteus_mirabilis": 2,
-    "streptococcus_pneumoniae": 1, // Poor gram-positive coverage compared to ceftriaxone
-    "staphylococcus_aureus_mssa": 1, // Very weak MSSA activity
+    "neisseria_gonorrhoeae": 2,
+    "streptococcus_pneumoniae": 1,
+    "staphylococcus_aureus_mssa": 1,
     "staphylococcus_aureus_mrsa": 0,
     "streptococcus_pyogenes": 1,
     "enterococcus_faecalis": 0,
     "enterococcus_faecium": 0,
     "bacteroides_fragilis": 0,
     "clostridium_perfringens": 0,
+    "clostridium_difficile": 0,
     "peptostreptococcus_spp": 0,
     "mycoplasma_pneumoniae": 0,
     "chlamydophila_pneumoniae": 0,
-    "legionella_pneumophila": 0
+    "legionella_pneumophila": 0,
+    "chlamydia_trachomatis": 0
   },
   "meropenem": {
     "escherichia_coli": 2,
@@ -456,18 +648,21 @@ export const SPECTRUM = {
     "haemophilus_influenzae": 2,
     "enterobacter_cloacae": 2,
     "proteus_mirabilis": 2,
+    "neisseria_gonorrhoeae": 2,
     "streptococcus_pneumoniae": 2,
     "staphylococcus_aureus_mssa": 2,
     "staphylococcus_aureus_mrsa": 0,
     "streptococcus_pyogenes": 2,
-    "enterococcus_faecalis": 1, // Active against E. faecalis but usually requires synergy
+    "enterococcus_faecalis": 1,
     "enterococcus_faecium": 0,
     "bacteroides_fragilis": 2,
     "clostridium_perfringens": 2,
+    "clostridium_difficile": 0,
     "peptostreptococcus_spp": 2,
     "mycoplasma_pneumoniae": 0,
     "chlamydophila_pneumoniae": 0,
-    "legionella_pneumophila": 0
+    "legionella_pneumophila": 0,
+    "chlamydia_trachomatis": 0
   },
   "gentamicin": {
     "escherichia_coli": 2,
@@ -476,18 +671,21 @@ export const SPECTRUM = {
     "haemophilus_influenzae": 2,
     "enterobacter_cloacae": 2,
     "proteus_mirabilis": 2,
+    "neisseria_gonorrhoeae": 0,
     "streptococcus_pneumoniae": 0,
-    "staphylococcus_aureus_mssa": 1, // Synergistic only, not used as monotherapy
+    "staphylococcus_aureus_mssa": 1,
     "staphylococcus_aureus_mrsa": 0,
     "streptococcus_pyogenes": 0,
-    "enterococcus_faecalis": 1, // Synergistic only
+    "enterococcus_faecalis": 1,
     "enterococcus_faecium": 0,
     "bacteroides_fragilis": 0,
     "clostridium_perfringens": 0,
+    "clostridium_difficile": 0,
     "peptostreptococcus_spp": 0,
     "mycoplasma_pneumoniae": 0,
     "chlamydophila_pneumoniae": 0,
-    "legionella_pneumophila": 0
+    "legionella_pneumophila": 0,
+    "chlamydia_trachomatis": 0
   },
   "ciprofloxacin": {
     "escherichia_coli": 2,
@@ -496,7 +694,8 @@ export const SPECTRUM = {
     "haemophilus_influenzae": 2,
     "enterobacter_cloacae": 2,
     "proteus_mirabilis": 2,
-    "streptococcus_pneumoniae": 1, // Low activity
+    "neisseria_gonorrhoeae": 2,
+    "streptococcus_pneumoniae": 1,
     "staphylococcus_aureus_mssa": 1,
     "staphylococcus_aureus_mrsa": 0,
     "streptococcus_pyogenes": 0,
@@ -504,10 +703,12 @@ export const SPECTRUM = {
     "enterococcus_faecium": 0,
     "bacteroides_fragilis": 0,
     "clostridium_perfringens": 0,
+    "clostridium_difficile": 0,
     "peptostreptococcus_spp": 0,
     "mycoplasma_pneumoniae": 2,
     "chlamydophila_pneumoniae": 2,
-    "legionella_pneumophila": 2
+    "legionella_pneumophila": 2,
+    "chlamydia_trachomatis": 2
   },
   "clarithromycin": {
     "escherichia_coli": 0,
@@ -516,7 +717,8 @@ export const SPECTRUM = {
     "haemophilus_influenzae": 1,
     "enterobacter_cloacae": 0,
     "proteus_mirabilis": 0,
-    "streptococcus_pneumoniae": 2, // High resistance rates now
+    "neisseria_gonorrhoeae": 1,
+    "streptococcus_pneumoniae": 2,
     "staphylococcus_aureus_mssa": 2,
     "staphylococcus_aureus_mrsa": 0,
     "streptococcus_pyogenes": 2,
@@ -524,10 +726,12 @@ export const SPECTRUM = {
     "enterococcus_faecium": 0,
     "bacteroides_fragilis": 0,
     "clostridium_perfringens": 1,
+    "clostridium_difficile": 0,
     "peptostreptococcus_spp": 1,
     "mycoplasma_pneumoniae": 2,
     "chlamydophila_pneumoniae": 2,
-    "legionella_pneumophila": 2
+    "legionella_pneumophila": 2,
+    "chlamydia_trachomatis": 2
   },
   "daptomycin": {
     "escherichia_coli": 0,
@@ -536,12 +740,15 @@ export const SPECTRUM = {
     "haemophilus_influenzae": 0,
     "enterobacter_cloacae": 0,
     "proteus_mirabilis": 0,
+    "neisseria_gonorrhoeae": 0,
     "streptococcus_pneumoniae": 2,
     "staphylococcus_aureus_mssa": 2,
     "staphylococcus_aureus_mrsa": 2,
     "streptococcus_pyogenes": 2,
     "enterococcus_faecalis": 2,
-    "enterococcus_faecium": 2
+    "enterococcus_faecium": 2,
+    "clostridium_difficile": 0,
+    "chlamydia_trachomatis": 0
   },
   "vancomycin": {
     "escherichia_coli": 0,
@@ -550,12 +757,15 @@ export const SPECTRUM = {
     "haemophilus_influenzae": 0,
     "enterobacter_cloacae": 0,
     "proteus_mirabilis": 0,
+    "neisseria_gonorrhoeae": 0,
     "streptococcus_pneumoniae": 2,
     "staphylococcus_aureus_mssa": 2,
     "staphylococcus_aureus_mrsa": 2,
     "streptococcus_pyogenes": 2,
     "enterococcus_faecalis": 2,
-    "enterococcus_faecium": 1 // Susceptible unless VanA/VanB phenotype (VRE)
+    "enterococcus_faecium": 1,
+    "clostridium_difficile": 2,
+    "chlamydia_trachomatis": 0
   },
   "metronidazole": {
     "escherichia_coli": 0,
@@ -564,6 +774,7 @@ export const SPECTRUM = {
     "haemophilus_influenzae": 0,
     "enterobacter_cloacae": 0,
     "proteus_mirabilis": 0,
+    "neisseria_gonorrhoeae": 0,
     "streptococcus_pneumoniae": 0,
     "staphylococcus_aureus_mssa": 0,
     "staphylococcus_aureus_mrsa": 0,
@@ -572,24 +783,29 @@ export const SPECTRUM = {
     "enterococcus_faecium": 0,
     "bacteroides_fragilis": 2,
     "clostridium_perfringens": 2,
+    "clostridium_difficile": 2,
     "peptostreptococcus_spp": 2,
     "mycoplasma_pneumoniae": 0,
     "chlamydophila_pneumoniae": 0,
-    "legionella_pneumophila": 0
+    "legionella_pneumophila": 0,
+    "chlamydia_trachomatis": 0
   },
   "nitrofurantoin": {
     "escherichia_coli": 2,
-    "klebsiella_pneumoniae": 2, // High susceptibilities still
+    "klebsiella_pneumoniae": 2,
     "pseudomonas_aeruginosa": 0,
     "haemophilus_influenzae": 0,
     "enterobacter_cloacae": 1,
-    "proteus_mirabilis": 0, // Intrinsically resistant
+    "proteus_mirabilis": 0,
+    "neisseria_gonorrhoeae": 0,
     "streptococcus_pneumoniae": 0,
     "staphylococcus_aureus_mssa": 2,
     "staphylococcus_aureus_mrsa": 0,
     "streptococcus_pyogenes": 0,
     "enterococcus_faecalis": 2,
-    "enterococcus_faecium": 1
+    "enterococcus_faecium": 1,
+    "clostridium_difficile": 0,
+    "chlamydia_trachomatis": 0
   }
 };
 
@@ -633,5 +849,69 @@ export const GUIDELINES = {
   "neutropenic_sepsis": {
     nice: "NICE Guideline CG151 (Neutropenic Sepsis):\n- **Empirical first-line:** Immediately administer empirical monotherapy with **Piperacillin/Tazobactam** (Tazocin) 4.5g TDS IV. Do not delay for diagnostics.\n- **Alternative:** **Meropenem** (reserved for patients with history of beta-lactam anaphylaxis or known ESBL colonization). Add Vancomycin only if catheter infection suspected.",
     smi: "UK Standard Sepsis Protocols:\n- Pre-dose blood cultures are mandatory, but administering the first antibiotic dose must occur within 1 hour of presentation ('Sepsis Six' pathway)."
+  },
+  "copd_exacerbation": {
+    nice: "NICE Guideline NG114 (COPD Exacerbation):\n- **Empirical first-line PO:** **Amoxicillin** 500mg TDS PO (5 days) OR **Doxycycline** 200mg day 1, then 100mg QD PO (5 days), OR **Clarithromycin** 500mg BD PO.\n- Reassess if symptoms do not improve within 2-3 days.",
+    smi: "UK Standard Clinical Guidance:\n- Sputum culture is recommended if patient has frequent exacerbations, purulent sputum, or fails empirical therapy."
+  },
+  "tonsillitis": {
+    nice: "NICE Guideline NG120 (Sore Throat / Tonsillitis):\n- **First-line PO:** **Phenoxymethylpenicillin** 500mg QDS PO (or 1g BD) for 10 days to prevent rheumatic fever complications.\n- **Penicillin Allergy:** **Clarithromycin** 250mg-500mg BD PO for 5 days.",
+    smi: "UK Standards for Microbiology Investigations:\n- Throat swabs are indicated only if Centor score >= 3 or severe symptoms. Swabs check for beta-hemolytic Streptococcus."
+  },
+  "sinusitis": {
+    nice: "NICE Guideline NG133 (Sinusitis - Acute):\n- **First-line PO:** **Phenoxymethylpenicillin** 500mg QDS PO (5 days). Alternative: **Doxycycline** 200mg stat then 100mg QD PO.\n- **Second-line / Complicated:** **Co-amoxiclav** 625mg TDS PO.",
+    smi: "UK Standard Clinical Guidance:\n- Empirical treatment should only be started if symptoms are severe, purulent nasal discharge is present, or patient fails to improve after 10 days."
+  },
+  "bite_infection": {
+    nice: "NICE Guideline NG184 (Human / Animal Bites):\n- **Empirical Prophylaxis / Treatment:** **Co-amoxiclav** 375mg-625mg TDS PO or 1.2g TDS IV (5 days).\n- **Penicillin Allergy:** **Doxycycline** 100mg BD PO + **Metronidazole** 400mg TDS PO (covers anaerobes and Gram-negatives in oral flora).",
+    smi: "UK SMI B 11 (Skin & Soft Tissue Infections):\n- Wound swab of bite site is mandatory to isolate *Pasteurella* spp. (animal bites) or *Eikenella corrodens* (human bites)."
+  },
+  "sepsis_unknown": {
+    nice: "NICE Guidelines / UK Sepsis Trust:\n- **Empirical Sepsis (source unknown):** **Piperacillin/Tazobactam** (Tazocin) 4.5g TDS IV, OR **Co-amoxiclav** 1.2g TDS IV + **Gentamicin** 5-7mg/kg IV QD (TDM required).\n- Add **Vancomycin** if high risk of MRSA (prior colonization or line-related infection).",
+    smi: "UK Standard Sepsis Protocols:\n- Take blood cultures immediately and check lactate. Start 'Sepsis Six' pathway and review antibiotics within 48-72 hours."
+  },
+  "infective_endocarditis": {
+    nice: "BSAC / NICE Guidelines (Infective Endocarditis):\n- **Empirical native valve:** **Amoxicillin** 2g Q4h IV + **Gentamicin** 80mg BD IV + **Vancomycin** 1g-1.5g BD IV (if MRSA risk/prosthetic valve).\n- Long-term therapy (4-6 weeks) required under specialist consultation.",
+    smi: "UK SMI B 37 (Blood Cultures):\n- Draw 3 sets of blood cultures within 24 hours prior to starting therapy (if clinically stable) to identify low-level bacteremia."
+  },
+  "c_difficile": {
+    nice: "NICE Guideline NG199 (C. difficile Colitis):\n- **First-line Empirical PO:** **Vancomycin** 125mg QDS PO (10 days).\n- **Alternative / Severe:** Fidaxomicin 200mg BD PO. Metronidazole PO is reserved for mild non-severe cases if other options are unavailable.",
+    smi: "UK Standards for Microbiology Investigations:\n- Diagnose C. diff using GDH screen followed by toxin EIA assay on diarrheal stool specimens (Bristol Stool Chart 5-7)."
+  },
+  "bronchitis": {
+    nice: "NICE Guideline NG114 (Acute Bronchitis):\n- **Empirical PO (if indicated/unwell):** Doxycycline 200mg day 1, then 100mg QD PO (5 days), OR **Amoxicillin** 500mg TDS PO (5 days).\n- Note: Most acute bronchitis is viral and does not benefit from antibiotics.",
+    smi: "UK Standards for Microbiology Investigations:\n- Sputum culture is not routinely recommended for uncomplicated acute bronchitis."
+  },
+  "cauti": {
+    nice: "NICE Guideline NG113 (Catheter-Associated UTI):\n- **First-line PO/IV:** **Co-amoxiclav** 625mg TDS PO or 1.2g TDS IV (7-10 days).\n- **Alternative (Suspected Pseudomonas/MDR):** **Ciprofloxacin** 500mg BD PO / 400mg BD IV, or **Piperacillin/Tazobactam** (Tazocin) 4.5g TDS IV.\n- Remove or change the catheter as soon as possible if it has been in place for >7 days.",
+    smi: "UK SMI B 41 (Investigation of Urine):\n- Urine should be sampled from the sampling port of the catheter tubing, not the drainage bag. Biofilms skew results."
+  },
+  "prostatitis": {
+    nice: "NICE Guideline NG110 (Prostatitis - Acute):\n- **First-line PO:** **Ciprofloxacin** 500mg BD PO for 14 days (extend to 28 days if needed).\n- **Severe/Hospitalized IV:** **Piperacillin/Tazobactam** 4.5g TDS IV, or **Ceftriaxone** 2g QD IV + **Gentamicin** if sepsis suspected.\n- Fluoroquinolones have excellent lipid solubility and prostatic fluid penetration.",
+    smi: "UK SMI B 41 (Investigation of Urine):\n- Mid-stream urine or post-prostatic massage urine culture is recommended to identify pathogen and sensitivity."
+  },
+  "diverticulitis": {
+    nice: "NICE Guideline NG147 (Diverticular Disease - Acute Diverticulitis):\n- **Empirical IV (Severe/Sepsis):** **Co-amoxiclav** 1.2g TDS IV, OR **Ceftriaxone** 2g QD IV + **Metronidazole** 500mg TDS IV.\n- **Empirical PO (Mild/Outpatient):** **Co-amoxiclav** 625mg TDS PO (5 days), or **Ciprofloxacin** 500mg BD PO + **Metronidazole** 400mg TDS PO.",
+    smi: "UK Standard Surgical Sepsis Guidelines:\n- Check CT abdomen to exclude abscess. Target coliforms and anaerobes."
+  },
+  "sbp": {
+    nice: "British Society of Gastroenterology (BSG) Guidelines:\n- **Empirical First-line IV:** **Ceftriaxone** 2g QD IV (typically 5-7 days).\n- **Alternative (MDR risk):** **Piperacillin/Tazobactam** 4.5g TDS IV.\n- Avoid aminoglycosides (Gentamicin) due to extremely high risk of inducing renal failure (hepatorenal syndrome) in cirrhotic patients.",
+    smi: "UK SMI B 14 (Investigation of Ascitic Fluid):\n- Ascitic fluid PMN count > 250 cells/mm3 is diagnostic. Inoculate fluid directly into blood culture bottles at the bedside."
+  },
+  "diabetic_foot": {
+    nice: "NICE Guideline NG19 (Diabetic Foot Infection):\n- **Moderate-to-Severe Infection:** **Co-amoxiclav** 1.2g TDS IV / 625mg TDS PO.\n- **Severe / Pseudomonas risk:** **Piperacillin/Tazobactam** 4.5g TDS IV. If MRSA suspected, add **Vancomycin**.\n- Check for underlying osteomyelitis (requires imaging and long-term therapy).",
+    smi: "UK SMI B 11 (Skin & Soft Tissue Infections):\n- Swabs of ulcers are often contaminated with colonizers. Deep tissue biopsy or curettage after wound debridement is preferred."
+  },
+  "necrotising_fasciitis": {
+    nice: "NHS England / Royal College of Surgeons Guidelines:\n- **Surgical Emergency:** Immediate surgical debridement is the primary treatment. Do not delay surgery for antibiotics.\n- **Empirical Triple Cocktail IV:** **Meropenem** 1g TDS IV + **Clindamycin** 1.2g QDS IV + **Vancomycin** 1.5g BD IV (or Linezolid).\n- *Clindamycin* is critical to suppress bacterial toxin production (superantigens/streptolysin).",
+    smi: "UK SMI B 11 (Investigation of Skin and Superficial Soft Tissue):\n- Deep tissue biopsies and blood cultures are critical. Send tissue for urgent Gram stain and aerobic/anaerobic culture."
+  },
+  "pid": {
+    nice: "BASHH Guidelines (Pelvic Inflammatory Disease):\n- **Empirical Outpatient Regimen:** **Ceftriaxone** 1g IM single dose + **Doxycycline** 100mg BD PO (14 days) + **Metronidazole** 400mg BD PO (14 days).\n- Targets Chlamydia, Gonococci, and genital tract anaerobes/Gram-negatives.",
+    smi: "UK SMI B 28 (Investigation of Genital Tract Swabs):\n- Obtain endocervical/vaginal swabs for Chlamydia and Gonorrhea PCR prior to starting therapy."
+  },
+  "crbsi": {
+    nice: "Local Vascular Access Infection Guidelines:\n- **Empirical Line-Sepsis IV:** **Vancomycin** 15mg/kg Q12h IV (covers MRSA / Coag-negative Staph) + **Ceftazidime** 2g TDS IV (covers Pseudomonas).\n- Review need to pull the catheter line. Check peripheral and line blood culture pairs for differential time to positivity (DTP).",
+    smi: "UK SMI B 37 (Blood Cultures):\n- Draw concurrent blood cultures from the catheter hub and a peripheral vein before starting therapy."
   }
 };
