@@ -32,6 +32,36 @@ const RECOMMENDATIONS = {
   "crbsi": { drugs: ["vancomycin", "ceftazidime"], dose: "15mg/kg / 2g", route: "IV", freq: "Q12h / Q8h", duration: "10-14 days", rationale: "Empirical vascular access line coverage covering MRSA, coag-negative staph, and Pseudomonas." }
 };
 
+// --- PENICILLIN-ALLERGY ALTERNATIVE REGIMENS ---
+const PENICILLIN_ALLERGY_ALTERNATIVES = {
+  "cap": { drugs: ["clarithromycin"], dose: "500mg", route: "PO", freq: "Q12h", duration: "5 days", rationale: "Macrolide alternative for penicillin-allergic patients to cover typical respiratory organisms." },
+  "hap": { drugs: ["ciprofloxacin", "vancomycin"], dose: "400mg / 1.5g", route: "IV / IV", freq: "Q12h / Q12h", duration: "7 days", rationale: "Ciprofloxacin + Vancomycin covers expected Gram-negatives (including Pseudomonas) and Gram-positives (including MRSA) without beta-lactam cross-reactivity." },
+  "uti_cystitis": { drugs: ["nitrofurantoin"], dose: "100mg", route: "PO", freq: "Q12h", duration: "3 days", rationale: "Nitrofurantoin is a non-beta-lactam and safe to use in penicillin allergy." },
+  "uti_pyelonephritis": { drugs: ["ciprofloxacin"], dose: "500mg", route: "PO", freq: "Q12h", duration: "7 days", rationale: "Fluoroquinolones are highly effective non-beta-lactam agents for renal tissue infections." },
+  "cellulitis": { drugs: ["clarithromycin"], dose: "500mg", route: "PO", freq: "Q12h", duration: "5-7 days", rationale: "Macrolide alternative covering typical skin pathogens (MSSA and Streptococci)." },
+  "osteomyelitis": { drugs: ["vancomycin"], dose: "15mg/kg", route: "IV", freq: "Q12h", duration: "6 weeks", rationale: "Glycopeptide alternative targeting Gram-positives in severe penicillin allergy." },
+  "meningitis": { drugs: ["ciprofloxacin", "vancomycin"], dose: "400mg / 1.5g", route: "IV / IV", freq: "Q8h / Q12h", duration: "10-14 days", rationale: "Non-beta-lactam combination to cover Streptococcus pneumoniae and Haemophilus influenzae with CNS penetration." },
+  "intra_abdominal": { drugs: ["ciprofloxacin", "metronidazole"], dose: "400mg / 500mg", route: "IV", freq: "Q12h / Q8h", duration: "5-7 days", rationale: "Ciprofloxacin + Metronidazole provides excellent enteric Gram-negative and anaerobic coverage." },
+  "cholecystitis_cholangitis": { drugs: ["ciprofloxacin", "metronidazole"], dose: "400mg / 500mg", route: "IV", freq: "Q12h / Q8h", duration: "3-5 days", rationale: "Ciprofloxacin + Metronidazole achieves good biliary tract levels and covers typical pathogens." },
+  "neutropenic_sepsis": { drugs: ["ciprofloxacin", "vancomycin"], dose: "400mg / 1.5g", route: "IV / IV", freq: "Q8h / Q12h", duration: "7 days", rationale: "Ciprofloxacin provides pseudomonal coverage, and Vancomycin covers Gram-positives in severe penicillin allergy." },
+  "copd_exacerbation": { drugs: ["clarithromycin"], dose: "500mg", route: "PO", freq: "Q12h", duration: "5 days", rationale: "Macrolide alternative covering H. influenzae and S. pneumoniae." },
+  "tonsillitis": { drugs: ["clarithromycin"], dose: "500mg", route: "PO", freq: "Q12h", duration: "5 days", rationale: "Macrolide alternative to target Streptococcus pyogenes." },
+  "sinusitis": { drugs: ["clarithromycin"], dose: "500mg", route: "PO", freq: "Q12h", duration: "5 days", rationale: "Macrolide alternative covering respiratory flora." },
+  "bite_infection": { drugs: ["ciprofloxacin", "metronidazole"], dose: "500mg / 400mg", route: "PO", freq: "Q12h / Q8h", duration: "5 days", rationale: "Non-beta-lactam oral combination covering Pasteurella (Ciprofloxacin) and oral anaerobes (Metronidazole)." },
+  "sepsis_unknown": { drugs: ["ciprofloxacin", "vancomycin", "metronidazole"], dose: "400mg / 1.5g / 500mg", route: "IV / IV / IV", freq: "Q12h / Q12h / Q8h", duration: "5-7 days", rationale: "Broad empirical non-beta-lactam coverage covering Gram-negatives, MRSA/Gram-positives, and anaerobes." },
+  "infective_endocarditis": { drugs: ["vancomycin", "gentamicin"], dose: "1.5g / 80mg", route: "IV / IV", freq: "Q12h / Q12h", duration: "4-6 weeks", rationale: "Bactericidal synergistic combination safe for severe penicillin allergy." },
+  "c_difficile": { drugs: ["vancomycin"], dose: "125mg", route: "PO", freq: "Q6h", duration: "10 days", rationale: "Oral Vancomycin is safe and standard first-line therapy for C. diff colitis." },
+  "bronchitis": { drugs: ["clarithromycin"], dose: "500mg", route: "PO", freq: "Q12h", duration: "5 days", rationale: "Macrolide alternative for bronchitis." },
+  "cauti": { drugs: ["ciprofloxacin"], dose: "500mg", route: "PO", freq: "Q12h", duration: "7 days", rationale: "Oral fluoroquinolone for catheter-associated UTI." },
+  "prostatitis": { drugs: ["ciprofloxacin"], dose: "500mg", route: "PO", freq: "Q12h", duration: "14 days", rationale: "Ciprofloxacin achieves therapeutic levels in prostatic fluid and is safe in allergy." },
+  "diverticulitis": { drugs: ["ciprofloxacin", "metronidazole"], dose: "400mg / 500mg", route: "IV", freq: "Q12h / Q8h", duration: "5 days", rationale: "Ciprofloxacin + Metronidazole covers Gram-negatives and anaerobes without cross-reactivity risk." },
+  "sbp": { drugs: ["ciprofloxacin"], dose: "400mg", route: "IV", freq: "Q12h", duration: "5 days", rationale: "Fluoroquinolone alternative safe for cirrhotic patients with penicillin anaphylaxis." },
+  "diabetic_foot": { drugs: ["ciprofloxacin", "metronidazole", "vancomycin"], dose: "400mg / 500mg / 1.5g", route: "IV / IV / IV", freq: "Q12h / Q8h / Q12h", duration: "7-14 days", rationale: "Triple non-beta-lactam therapy covering anaerobes, Gram-negatives, and Gram-positives (MRSA)." },
+  "necrotising_fasciitis": { drugs: ["vancomycin", "metronidazole", "gentamicin"], dose: "1.5g / 500mg / 5mg/kg", route: "IV", freq: "Q12h / Q8h / Q24h", duration: "Surgical recovery", rationale: "Surgical debridement is essential. This non-beta-lactam cocktail covers Gram-positives, anaerobes, and Gram-negatives." },
+  "pid": { drugs: ["ciprofloxacin", "metronidazole"], dose: "500mg / 400mg", route: "PO", freq: "Q12h / Q12h", duration: "14 days", rationale: "Non-beta-lactam alternative recommended by BASHH guidelines." },
+  "crbsi": { drugs: ["ciprofloxacin", "vancomycin"], dose: "400mg / 1.5g", route: "IV / IV", freq: "Q12h / Q12h", duration: "10-14 days", rationale: "Covers Pseudomonas and MRSA in vascular access line infections for penicillin-allergic patients." }
+};
+
 // --- STATE MANAGEMENT ---
 const state = {
   patient: {
@@ -40,13 +70,15 @@ const state = {
     weight: 70, // kg
     height: 175, // cm
     creatinine: 80, // umol/L
-    useAdjustedWeight: true
+    useAdjustedWeight: true,
+    allergies: [] // array of allergy keys e.g. ["penicillin_severe", "cephalosporin"]
   },
   config: {
     currentStep: 1,
     syndromeSearchQuery: "",
+    showAllSyndromes: false,
     treatmentMode: "empiric", // "empiric" or "directed"
-    selectedSyndrome: "cap",
+    selectedSyndrome: "", // empty by default
     microIsolates: [], // array of { id, name, antibiogram: { drugId -> "S"|"I"|"R" } }
     currentRegimen: {}, // drugId -> { dose, route, freq }
     spectrumViewMode: "case" // "case" | "alternatives" | "full"
@@ -96,7 +128,7 @@ function initDOM() {
     }
   });
 
-  // Syndrome Search
+  // Syndrome Search & Actions
   const searchInput = document.getElementById('syndrome-search');
   const clearSearchBtn = document.getElementById('clear-syndrome-search');
   searchInput.addEventListener('input', (e) => {
@@ -111,6 +143,27 @@ function initDOM() {
     clearSearchBtn.style.display = 'none';
     renderSyndromesList();
   });
+
+  // Top Next Button
+  const btnNextTop = document.getElementById('btn-next-top');
+  if (btnNextTop) {
+    btnNextTop.addEventListener('click', () => {
+      if (canAdvanceStep(1, 2)) {
+        goToStep(2);
+      }
+    });
+  }
+
+  // Toggle Browse All Button
+  const btnToggleBrowseAll = document.getElementById('btn-toggle-browse-all');
+  if (btnToggleBrowseAll) {
+    btnToggleBrowseAll.addEventListener('click', () => {
+      state.config.showAllSyndromes = !state.config.showAllSyndromes;
+      btnToggleBrowseAll.classList.toggle('active', state.config.showAllSyndromes);
+      btnToggleBrowseAll.innerText = state.config.showAllSyndromes ? 'Collapse All' : 'Browse All (26)';
+      renderSyndromesList();
+    });
+  }
 
   // Microbiology Mode Switching
   const btnEmpiric = document.getElementById('mode-empiric');
@@ -200,6 +253,45 @@ function initDOM() {
     state.patient.useAdjustedWeight = e.target.checked;
     calculateRenalClearance();
     renderAll();
+  });
+
+  // Documented Drug Allergies check listeners
+  const allergyKeys = [
+    "penicillin-severe", "penicillin-mild", "cephalosporin", "carbapenem",
+    "macrolide", "fluoroquinolone", "aminoglycoside", "glycopeptide",
+    "metronidazole", "nitrofurantoin"
+  ];
+  
+  allergyKeys.forEach(key => {
+    const checkbox = document.getElementById(`allergy-${key}`);
+    if (checkbox) {
+      checkbox.addEventListener('change', (e) => {
+        const stateKey = key.replace('-', '_'); // e.g. penicillin_severe
+        if (e.target.checked) {
+          if (!state.patient.allergies.includes(stateKey)) {
+            state.patient.allergies.push(stateKey);
+          }
+          const lbl = document.getElementById(`lbl-allergy-${key}`);
+          if (lbl) lbl.classList.add('checked');
+        } else {
+          state.patient.allergies = state.patient.allergies.filter(item => item !== stateKey);
+          const lbl = document.getElementById(`lbl-allergy-${key}`);
+          if (lbl) lbl.classList.remove('checked');
+        }
+        updateSummaryCard();
+        renderAll();
+      });
+    }
+  });
+
+  // IVOS checklist change listeners
+  ["temp", "improvement", "swallow", "no-deep"].forEach(key => {
+    const cb = document.getElementById(`ivos-${key}`);
+    if (cb) {
+      cb.addEventListener('change', () => {
+        renderAll();
+      });
+    }
   });
 
   // Clear current regimen
@@ -407,13 +499,40 @@ function canAdvanceStep(current, target) {
 
 function restartWizard() {
   state.config.currentStep = 1;
-  state.config.selectedSyndrome = "cap";
+  state.config.selectedSyndrome = "";
   state.config.treatmentMode = "empiric";
   state.config.microIsolates = [];
   state.config.currentRegimen = {};
   state.config.syndromeSearchQuery = "";
+  state.config.showAllSyndromes = false;
+  state.patient.allergies = [];
   
   document.getElementById('syndrome-search').value = "";
+  
+  const browseAllBtn = document.getElementById('btn-toggle-browse-all');
+  if (browseAllBtn) {
+    browseAllBtn.classList.remove('active');
+    browseAllBtn.innerText = "Browse All (26)";
+  }
+  
+  const allergyKeys = [
+    "penicillin-severe", "penicillin-mild", "cephalosporin", "carbapenem",
+    "macrolide", "fluoroquinolone", "aminoglycoside", "glycopeptide",
+    "metronidazole", "nitrofurantoin"
+  ];
+  
+  allergyKeys.forEach(key => {
+    const cb = document.getElementById(`allergy-${key}`);
+    if (cb) cb.checked = false;
+    const lbl = document.getElementById(`lbl-allergy-${key}`);
+    if (lbl) lbl.classList.remove('checked');
+  });
+
+  ["temp", "improvement", "swallow", "no-deep"].forEach(key => {
+    const cb = document.getElementById(`ivos-${key}`);
+    if (cb) cb.checked = false;
+  });
+
   document.getElementById('mode-empiric').click();
 
   renderSyndromesList();
@@ -429,6 +548,28 @@ function renderSyndromesList() {
   container.innerHTML = '';
 
   const query = state.config.syndromeSearchQuery.toLowerCase().trim();
+
+  // If search is empty and we are not showing all, show a placeholder helper
+  if (!query && !state.config.showAllSyndromes) {
+    container.innerHTML = `
+      <div class="syndrome-search-placeholder">
+        <span style="font-size: 2.5rem;">🔍</span>
+        <h3 style="margin-top: 0.5rem; color: #fff;">Search or Browse Infections</h3>
+        <p>Type above to search for a specific diagnosis or system (e.g. cystitis, sepsis), or click <strong>Browse All</strong> to see the full directory.</p>
+      </div>
+    `;
+    
+    // Manage top Next button visibility
+    const nextBtnTop = document.getElementById('btn-next-top');
+    if (nextBtnTop) {
+      if (state.config.selectedSyndrome) {
+        nextBtnTop.classList.remove('hidden');
+      } else {
+        nextBtnTop.classList.add('hidden');
+      }
+    }
+    return;
+  }
 
   // Group syndromes by Site / System
   const grouped = {};
@@ -499,6 +640,16 @@ function renderSyndromesList() {
     section.appendChild(grid);
     container.appendChild(section);
   });
+
+  // Manage top Next button visibility
+  const nextBtnTop = document.getElementById('btn-next-top');
+  if (nextBtnTop) {
+    if (state.config.selectedSyndrome) {
+      nextBtnTop.classList.remove('hidden');
+    } else {
+      nextBtnTop.classList.add('hidden');
+    }
+  }
 }
 
 // --- STEP 2: PATHOGEN ADDER & CUSTOM ANTIBIOGRAM RENDERING ---
@@ -793,8 +944,26 @@ function updateSummaryCard() {
 
   // Physiology
   const { age, sex, weight, height, creatinine } = state.patient;
-  document.getElementById('summary-patient-clearance').innerText = `CrCl ${state.calculatedCrCl} ml/min`;
+  document.getElementById('summary-patient-clearance').innerText = `CrCl ${state.calculatedCrCl || '--'} ml/min`;
   document.getElementById('summary-patient-demographics').innerText = `${age}${sex.charAt(0).toUpperCase()}, ${weight}kg, ${height}cm`;
+
+  // Allergies Summary update
+  const allergyLabel = document.getElementById('summary-patient-allergy');
+  if (allergyLabel) {
+    const count = state.patient.allergies.length;
+    if (count === 0) {
+      allergyLabel.innerText = "Allergies: NKDA (No Known Drug Allergies)";
+      allergyLabel.style.color = "";
+    } else {
+      const readable = state.patient.allergies.map(key => {
+        return key.replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase());
+      });
+      allergyLabel.innerText = `Allergies: ${readable.join(', ')}`;
+      allergyLabel.style.color = state.patient.allergies.some(k => k.includes('severe') || k === 'cephalosporin' || k === 'carbapenem')
+        ? "var(--color-danger)"
+        : "var(--color-warning)";
+    }
+  }
 
   // Current Regimen
   const curReg = state.config.currentRegimen;
@@ -1220,7 +1389,247 @@ function compileRegimenCritiques() {
     });
   }
 
+  // 6. General Drug Allergy Cross-Reactivity Auditor
+  const allergies = state.patient.allergies || [];
+  if (allergies.length > 0) {
+    const penicillins = ["amoxicillin", "flucloxacillin", "co_amoxiclav", "piperacillin_tazobactam"];
+    const cephalosporins = ["ceftriaxone", "ceftazidime"];
+    const carbapenems = ["meropenem"];
+    
+    current.forEach(drugId => {
+      const drug = ANTIBIOTICS[drugId];
+      let hasDirectAllergy = false;
+      
+      if (penicillins.includes(drugId) && (allergies.includes("penicillin_severe") || allergies.includes("penicillin_mild"))) {
+        const severity = allergies.includes("penicillin_severe") ? "severe anaphylaxis" : "mild rash";
+        critiques.push({
+          type: "danger",
+          title: `CONTRAINDICATED: Penicillin Allergy`,
+          message: `Your patient has a documented **penicillin allergy (${severity})**. Prescribing **${drug.name}** is contraindicated.`,
+          evidence: "BNF and NICE guidelines state beta-lactam antibiotics must not be given to patients with a history of hypersensitivity to penicillin."
+        });
+        hasDirectAllergy = true;
+      }
+      
+      if (cephalosporins.includes(drugId) && allergies.includes("cephalosporin")) {
+        critiques.push({
+          type: "danger",
+          title: `CONTRAINDICATED: Cephalosporin Allergy`,
+          message: `Your patient has a documented **cephalosporin allergy**. Prescribing **${drug.name}** is contraindicated.`,
+          evidence: "Contraindicated due to patient's reported allergies in their medical record."
+        });
+        hasDirectAllergy = true;
+      }
+
+      if (carbapenems.includes(drugId) && allergies.includes("carbapenem")) {
+        critiques.push({
+          type: "danger",
+          title: `CONTRAINDICATED: Carbapenem Allergy`,
+          message: `Your patient has a documented **carbapenem allergy**. Prescribing **${drug.name}** is contraindicated.`,
+          evidence: "Contraindicated due to patient's reported allergies in their medical record."
+        });
+        hasDirectAllergy = true;
+      }
+
+      if (drugId === "clarithromycin" && allergies.includes("macrolide")) {
+        critiques.push({
+          type: "danger",
+          title: `CONTRAINDICATED: Macrolide Allergy`,
+          message: `Your patient has a documented **macrolide allergy**. Prescribing **${drug.name}** is contraindicated.`,
+          evidence: "Contraindicated due to patient's reported allergies in their medical record."
+        });
+        hasDirectAllergy = true;
+      }
+
+      if (drugId === "ciprofloxacin" && allergies.includes("fluoroquinolone")) {
+        critiques.push({
+          type: "danger",
+          title: `CONTRAINDICATED: Fluoroquinolone Allergy`,
+          message: `Your patient has a documented **fluoroquinolone allergy**. Prescribing **${drug.name}** is contraindicated.`,
+          evidence: "Contraindicated due to patient's reported allergies in their medical record."
+        });
+        hasDirectAllergy = true;
+      }
+
+      if (drugId === "gentamicin" && allergies.includes("aminoglycoside")) {
+        critiques.push({
+          type: "danger",
+          title: `CONTRAINDICATED: Aminoglycoside Allergy`,
+          message: `Your patient has a documented **aminoglycoside allergy**. Prescribing **${drug.name}** is contraindicated.`,
+          evidence: "Contraindicated due to patient's reported allergies in their medical record."
+        });
+        hasDirectAllergy = true;
+      }
+
+      if (drugId === "vancomycin" && allergies.includes("glycopeptide")) {
+        critiques.push({
+          type: "danger",
+          title: `CONTRAINDICATED: Glycopeptide Allergy`,
+          message: `Your patient has a documented **glycopeptide allergy**. Prescribing **${drug.name}** is contraindicated.`,
+          evidence: "Contraindicated due to patient's reported allergies in their medical record."
+        });
+        hasDirectAllergy = true;
+      }
+
+      if (drugId === "metronidazole" && allergies.includes("metronidazole")) {
+        critiques.push({
+          type: "danger",
+          title: `CONTRAINDICATED: Metronidazole Allergy`,
+          message: `Your patient has a documented **metronidazole allergy**. Prescribing **${drug.name}** is contraindicated.`,
+          evidence: "Contraindicated due to patient's reported allergies in their medical record."
+        });
+        hasDirectAllergy = true;
+      }
+
+      if (drugId === "nitrofurantoin" && allergies.includes("nitrofurantoin")) {
+        critiques.push({
+          type: "danger",
+          title: `CONTRAINDICATED: Nitrofurantoin Allergy`,
+          message: `Your patient has a documented **nitrofurantoin allergy**. Prescribing **${drug.name}** is contraindicated.`,
+          evidence: "Contraindicated due to patient's reported allergies in their medical record."
+        });
+        hasDirectAllergy = true;
+      }
+
+      // Cross-reactivity warnings for penicillins vs other beta-lactams
+      if (!hasDirectAllergy && allergies.includes("penicillin_severe")) {
+        if (cephalosporins.includes(drugId)) {
+          critiques.push({
+            type: "danger",
+            title: `Severe Penicillin Cross-Reactivity Risk: ${drug.name}`,
+            message: `Your patient has a history of **severe penicillin anaphylaxis**. Prescribing cephalosporins like **${drug.name}** carries a cross-reactivity risk. Avoid unless benefits outweigh risks.`,
+            evidence: "Cross-reactivity between penicillins and cephalosporins is estimated around 1-5% in severe IgE-mediated allergy."
+          });
+        } else if (carbapenems.includes(drugId)) {
+          critiques.push({
+            type: "danger",
+            title: `Severe Penicillin Cross-Reactivity Risk: ${drug.name}`,
+            message: `Your patient has a history of **severe penicillin anaphylaxis**. Prescribing carbapenems like **${drug.name}** carries a cross-reactivity risk. Avoid unless benefits outweigh risks.`,
+            evidence: "Cross-reactivity between penicillins and carbapenems is estimated around 1% in severe IgE-mediated allergy."
+          });
+        }
+      }
+    });
+  }
+
+  // 7. Intravenous-to-Oral Switch (IVOS) Auditor
+  const ivosTemp = document.getElementById('ivos-temp')?.checked || false;
+  const ivosImprove = document.getElementById('ivos-improvement')?.checked || false;
+  const ivosSwallow = document.getElementById('ivos-swallow')?.checked || false;
+  const ivosNoDeep = document.getElementById('ivos-no-deep')?.checked || false;
+  
+  const meetsIvos = ivosTemp && ivosImprove && ivosSwallow && ivosNoDeep;
+  
+  if (meetsIvos) {
+    const ivToPoSwitches = {
+      "co_amoxiclav": "PO Co-amoxiclav (625mg PO Q8h)",
+      "ciprofloxacin": "PO Ciprofloxacin (500mg PO Q12h)",
+      "clarithromycin": "PO Clarithromycin (500mg PO Q12h)",
+      "metronidazole": "PO Metronidazole (400mg PO Q8h)"
+    };
+    
+    current.forEach(drugId => {
+      const doseInfo = state.config.currentRegimen[drugId];
+      if (doseInfo.route === "IV" && ivToPoSwitches[drugId]) {
+        critiques.push({
+          type: "success",
+          title: `Stewardship Opportunity: IV-to-Oral Switch (IVOS)`,
+          message: `The patient meets all IVOS criteria and is currently on IV **${ANTIBIOTICS[drugId].name}**. Consider switching to **${ivToPoSwitches[drugId]}** to reduce line infections and facilitate discharge.`,
+          evidence: "UK national guidance (IVOS CQUIN) recommends switching to oral therapy as soon as clinical criteria are met, particularly for drugs with high oral bioavailability."
+        });
+      }
+    });
+  }
+
   return critiques;
+}
+
+// --- ALLERGY HELPERS ---
+function isDrugBlockedByAllergies(drugId) {
+  const allergies = state.patient.allergies || [];
+  
+  if (allergies.includes("penicillin_severe") && ["amoxicillin", "flucloxacillin", "co_amoxiclav", "piperacillin_tazobactam", "ceftriaxone", "ceftazidime", "meropenem"].includes(drugId)) {
+    return true;
+  }
+  if (allergies.includes("penicillin_mild") && ["amoxicillin", "flucloxacillin", "co_amoxiclav", "piperacillin_tazobactam"].includes(drugId)) {
+    return true;
+  }
+  if (allergies.includes("cephalosporin") && ["ceftriaxone", "ceftazidime"].includes(drugId)) {
+    return true;
+  }
+  if (allergies.includes("carbapenem") && ["meropenem"].includes(drugId)) {
+    return true;
+  }
+  if (allergies.includes("macrolide") && ["clarithromycin"].includes(drugId)) {
+    return true;
+  }
+  if (allergies.includes("fluoroquinolone") && ["ciprofloxacin"].includes(drugId)) {
+    return true;
+  }
+  if (allergies.includes("aminoglycoside") && ["gentamicin"].includes(drugId)) {
+    return true;
+  }
+  if (allergies.includes("glycopeptide") && ["vancomycin"].includes(drugId)) {
+    return true;
+  }
+  if (allergies.includes("metronidazole") && ["metronidazole"].includes(drugId)) {
+    return true;
+  }
+  if (allergies.includes("nitrofurantoin") && ["nitrofurantoin"].includes(drugId)) {
+    return true;
+  }
+  
+  return false;
+}
+
+function getAlternativeEmpiricalRegimen(syndrome) {
+  const expectedBugs = SYNDROMES[syndrome]?.expectedPathogens || [];
+  const cleanDrugs = Object.keys(ANTIBIOTICS).filter(drugId => !isDrugBlockedByAllergies(drugId));
+  
+  const activeCandidates = cleanDrugs.map(drugId => {
+    let coveredBugsCount = 0;
+    expectedBugs.forEach(bugId => {
+      if ((SPECTRUM[drugId]?.[bugId] || 0) >= 2) {
+        coveredBugsCount++;
+      }
+    });
+    return {
+      id: drugId,
+      coveredCount: coveredBugsCount,
+      spectrumScore: ANTIBIOTICS[drugId].spectrumScore
+    };
+  }).filter(c => c.coveredCount > 0);
+  
+  if (activeCandidates.length > 0) {
+    activeCandidates.sort((a, b) => b.coveredCount - a.coveredCount || a.spectrumScore - b.spectrumScore);
+    const chosen = activeCandidates[0];
+    const drugInfo = ANTIBIOTICS[chosen.id];
+    
+    const needsAnaerobe = ["intra_abdominal", "cholecystitis_cholangitis", "diverticulitis", "pid", "diabetic_foot", "necrotising_fasciitis"].includes(syndrome);
+    const hasAnaerobe = SPECTRUM[chosen.id]?.["bacteroides_fragilis"] >= 2;
+    
+    if (needsAnaerobe && !hasAnaerobe && !isDrugBlockedByAllergies("metronidazole")) {
+      return {
+        drugs: [chosen.id, "metronidazole"],
+        dose: `${drugInfo.standardDose.split(' ')[0]} / 400mg`,
+        route: `${chosen.id === "nitrofurantoin" ? "PO" : "IV"} / PO`,
+        freq: `${drugInfo.standardDose.split(' ').slice(1).join(' ') || "Q8h"} / Q8h`,
+        duration: "5-7 days",
+        rationale: `Guidelines adjusted. Bypassed first-line agents due to patient allergies. Recommended alternative: ${drugInfo.name} + Metronidazole to cover expected pathogens.`
+      };
+    }
+    
+    return {
+      drugs: [chosen.id],
+      dose: drugInfo.standardDose.split(' ')[0],
+      route: drugInfo.name === "Nitrofurantoin" ? "PO" : (["Piperacillin/Tazobactam", "Gentamicin", "Meropenem", "Ceftriaxone", "Ceftazidime", "Daptomycin"].includes(drugInfo.name) ? "IV" : "PO"),
+      freq: drugInfo.standardDose.split(' ').slice(1).join(' ') || "Q8h",
+      duration: "5-7 days",
+      rationale: `Guidelines adjusted. Bypassed first-line agents due to patient allergies. Recommended alternative: ${drugInfo.name} (Spectrum Score: ${chosen.spectrumScore}).`
+    };
+  }
+  
+  return null;
 }
 
 // --- STEP 4: COMPILING RECOMMENDATIONS & GENERATING RATIONALE ---
@@ -1230,15 +1639,31 @@ function getRecommendedRegimen() {
   const syndrome = state.config.selectedSyndrome;
   
   if (!isDirected) {
-    // Return standard empirical guidelines
-    return RECOMMENDATIONS[syndrome] || {
-      drugs: ["amoxicillin"],
-      dose: "500mg",
-      route: "PO",
-      freq: "Q8h",
-      duration: "5 days",
-      rationale: "Default narrow-spectrum guideline recommendation."
-    };
+    const standardRec = RECOMMENDATIONS[syndrome];
+    if (standardRec) {
+      const hasBlocked = standardRec.drugs.some(drugId => isDrugBlockedByAllergies(drugId));
+      if (hasBlocked) {
+        if (state.patient.allergies.includes("penicillin_severe") && PENICILLIN_ALLERGY_ALTERNATIVES[syndrome]) {
+          const altHasBlocked = PENICILLIN_ALLERGY_ALTERNATIVES[syndrome].drugs.some(drugId => isDrugBlockedByAllergies(drugId));
+          if (!altHasBlocked) {
+            return PENICILLIN_ALLERGY_ALTERNATIVES[syndrome];
+          }
+        }
+        
+        const solverRec = getAlternativeEmpiricalRegimen(syndrome);
+        if (solverRec) return solverRec;
+        
+        return {
+          drugs: [],
+          dose: "--",
+          route: "--",
+          freq: "--",
+          duration: "--",
+          rationale: "CRITICAL: All standard empirical and alternative options in database are blocked by patient allergies. Contact Clinical Microbiology immediately."
+        };
+      }
+      return standardRec;
+    }
   }
 
   // Culture directed logic: narrowest coverage (lowest spectrum score) covering all isolates
@@ -1247,6 +1672,11 @@ function getRecommendedRegimen() {
 
   const candidateDrugs = [];
   Object.keys(ANTIBIOTICS).forEach(drugId => {
+    // If patient is allergic to this drug, bypass it
+    if (isDrugBlockedByAllergies(drugId)) {
+      return;
+    }
+
     // Check if susceptible to all isolates
     let isSusceptibleAll = true;
     isolates.forEach(isolate => {

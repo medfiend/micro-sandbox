@@ -63,11 +63,17 @@
             <p class="subtitle-text">Search and select the primary clinical diagnosis or infection system.</p>
           </div>
           <div class="card-body-wizard">
-            <!-- Search bar -->
-            <div class="search-wrapper">
-              <span class="search-icon">🔍</span>
-              <input type="text" id="syndrome-search" class="search-input" placeholder="Search infections (e.g. sepsis, diverticulitis, pyelonephritis)...">
-              <button type="button" class="btn btn-secondary btn-xs" id="clear-syndrome-search" style="display:none;">Clear</button>
+            <!-- Search and Navigation Controls -->
+            <div class="step1-controls-header">
+              <div class="search-wrapper">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="syndrome-search" class="search-input" placeholder="Search infections (e.g. sepsis, diverticulitis, pyelonephritis)...">
+                <button type="button" class="btn btn-secondary btn-xs" id="clear-syndrome-search" style="display:none;">Clear</button>
+              </div>
+              <div class="step1-action-buttons">
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-toggle-browse-all">Browse All (26)</button>
+                <button type="button" class="btn btn-primary btn-sm hidden" id="btn-next-top">Next Step →</button>
+              </div>
             </div>
             
             <!-- Syndrome Site Groupings -->
@@ -152,6 +158,21 @@
                 <label for="patient-creatinine">Serum Creatinine (µmol/L)</label>
                 <input type="number" id="patient-creatinine" min="10" max="1000" value="80" placeholder="80">
               </div>
+              <div class="form-group col-span-2" style="margin-top: 0.5rem;">
+                <label>Documented Drug Allergies (Select all that apply):</label>
+                <div class="allergies-grid" id="allergies-checkbox-list">
+                  <label class="checkbox-pill" id="lbl-allergy-penicillin-severe"><input type="checkbox" id="allergy-penicillin-severe"> Penicillin (Severe/Anaphylaxis)</label>
+                  <label class="checkbox-pill" id="lbl-allergy-penicillin-mild"><input type="checkbox" id="allergy-penicillin-mild"> Penicillin (Mild/Rash)</label>
+                  <label class="checkbox-pill" id="lbl-allergy-cephalosporin"><input type="checkbox" id="allergy-cephalosporin"> Cephalosporins</label>
+                  <label class="checkbox-pill" id="lbl-allergy-carbapenem"><input type="checkbox" id="allergy-carbapenem"> Carbapenems</label>
+                  <label class="checkbox-pill" id="lbl-allergy-macrolide"><input type="checkbox" id="allergy-macrolide"> Macrolides</label>
+                  <label class="checkbox-pill" id="lbl-allergy-fluoroquinolone"><input type="checkbox" id="allergy-fluoroquinolone"> Fluoroquinolones</label>
+                  <label class="checkbox-pill" id="lbl-allergy-aminoglycoside"><input type="checkbox" id="allergy-aminoglycoside"> Aminoglycosides</label>
+                  <label class="checkbox-pill" id="lbl-allergy-glycopeptide"><input type="checkbox" id="allergy-glycopeptide"> Glycopeptides</label>
+                  <label class="checkbox-pill" id="lbl-allergy-metronidazole"><input type="checkbox" id="allergy-metronidazole"> Metronidazole</label>
+                  <label class="checkbox-pill" id="lbl-allergy-nitrofurantoin"><input type="checkbox" id="allergy-nitrofurantoin"> Nitrofurantoin</label>
+                </div>
+              </div>
               <div class="form-group flex-checkbox">
                 <input type="checkbox" id="use-adjusted-weight" checked>
                 <label for="use-adjusted-weight">Use Adjusted Weight if Obese</label>
@@ -180,6 +201,34 @@
             <!-- Checklist list of antibiotics. Checking one shows a sub-dosing form -->
             <div class="current-drugs-checkbox-grid" id="current-antibiotic-list">
               <!-- Populated with checkboxes that expand on check -->
+            </div>
+          </div>
+        </div>
+
+        <!-- IV-to-Oral Switch (IVOS) Criteria Card -->
+        <div class="card" style="margin-top: 1.5rem;">
+          <div class="card-header-wizard">
+            <h2>🔄 Step 3c: IV-to-Oral Switch (IVOS) Criteria</h2>
+            <p class="subtitle-text">Check all that apply. Audits IV-to-oral switch opportunities when criteria are met.</p>
+          </div>
+          <div class="card-body-wizard">
+            <div class="ivos-checklist-grid">
+              <div class="flex-checkbox border-checkbox">
+                <input type="checkbox" id="ivos-temp">
+                <label for="ivos-temp"><strong>Apyrexial:</strong> Temperature is normal (&lt;38°C) for the last 24 hours.</label>
+              </div>
+              <div class="flex-checkbox border-checkbox">
+                <input type="checkbox" id="ivos-improvement">
+                <label for="ivos-improvement"><strong>Clinical Improvement:</strong> Patient is showing clear signs of clinical improvement.</label>
+              </div>
+              <div class="flex-checkbox border-checkbox">
+                <input type="checkbox" id="ivos-swallow">
+                <label for="ivos-swallow"><strong>Intact Oral Intake:</strong> Patient can tolerate oral fluids/food and has an intact swallow.</label>
+              </div>
+              <div class="flex-checkbox border-checkbox">
+                <input type="checkbox" id="ivos-no-deep">
+                <label for="ivos-no-deep"><strong>No Deep-Seated Infection:</strong> No high-risk/deep infection (e.g. endocarditis, meningitis, osteomyelitis, undrained abscess).</label>
+              </div>
             </div>
           </div>
         </div>
@@ -323,6 +372,7 @@
             <span class="summary-label">Patient Physiology</span>
             <span class="summary-value" id="summary-patient-clearance">CrCl 110 ml/min</span>
             <span class="summary-subtext" id="summary-patient-demographics">40M, 70kg, 175cm</span>
+            <span class="summary-subtext" id="summary-patient-allergy">Penicillin Allergy: None</span>
           </div>
           <div class="summary-item">
             <span class="summary-label">Current Regimen</span>

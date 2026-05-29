@@ -1921,6 +1921,79 @@ body.step-4 .col-summary {
   }
 }
 
+/* Step 1 controls header and top next button */
+.step1-controls-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.step1-controls-header .search-wrapper {
+  flex: 1;
+  min-width: 250px;
+}
+
+.step1-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Checklist items for IVOS checklist */
+.ivos-checklist-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.border-checkbox {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  background: var(--bg-input);
+  margin-top: 0 !important;
+  grid-column: span 2;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.border-checkbox:hover {
+  border-color: var(--border-focus);
+  background: var(--bg-card-hover);
+}
+
+.border-checkbox input:checked + label {
+  color: #fff;
+}
+
+/* Styling for helper placeholder when syndrome list is hidden */
+.syndrome-search-placeholder {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--text-muted);
+  border: 1px dashed var(--border-light);
+  border-radius: var(--radius-lg);
+  background: hsla(224, 25%, 6%, 0.2);
+  margin: 1rem 0;
+}
+
+.syndrome-search-placeholder p {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Allergies Grid checkbox container */
+.allergies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+
+
 
 
 

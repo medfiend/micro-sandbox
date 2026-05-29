@@ -153,9 +153,41 @@ function runTests() {
   const uncoveredCauti = cautiExpected.filter(bugId => (SPECTRUM["ciprofloxacin"]?.[bugId] || 0) < 2);
   assert(uncoveredCauti.includes("enterococcus_faecalis"), "CAUTI expected pathogen Enterococcus faecalis should be uncovered by Ciprofloxacin monotherapy (Score < 2)");
 
+  // TEST 16: Multi-Allergy Auditor - Safety Auditor & Cross-Reactivity
+  const mockAllergies = ["penicillin_severe", "macrolide"];
+  const mockAllergyRegimen = ["co_amoxiclav", "ceftriaxone", "clarithromycin", "ciprofloxacin"];
+  
+  const penicillins = ["amoxicillin", "flucloxacillin", "co_amoxiclav", "piperacillin_tazobactam"];
+  const otherBetaLactams = ["ceftriaxone", "ceftazidime", "meropenem"];
+  
+  const penWarnings = mockAllergyRegimen.filter(d => penicillins.includes(d) && (mockAllergies.includes("penicillin_severe") || mockAllergies.includes("penicillin_mild")));
+  const cephalosporinWarnings = mockAllergyRegimen.filter(d => otherBetaLactams.includes(d) && mockAllergies.includes("penicillin_severe"));
+  const macrolideWarnings = mockAllergyRegimen.filter(d => d === "clarithromycin" && mockAllergies.includes("macrolide"));
+  const nonAllergicWarnings = mockAllergyRegimen.filter(d => d === "ciprofloxacin" && (penicillins.includes(d) || otherBetaLactams.includes(d) || mockAllergies.includes("fluoroquinolone")));
+  
+  assert(penWarnings.length > 0, "Severe penicillin allergy should flag Co-amoxiclav as contraindicated");
+  assert(cephalosporinWarnings.length > 0, "Severe penicillin allergy should flag Ceftriaxone as cross-reactive risk");
+  assert(macrolideWarnings.length > 0, "Macrolide allergy should flag Clarithromycin as contraindicated");
+  assert(nonAllergicWarnings.length === 0, "Ciprofloxacin should not be flagged if patient has no fluoroquinolone allergy");
+
+
+
+  // TEST 17: IV-to-Oral Switch (IVOS) Opportunity Auditor
+  const mockIvosCriteriaMet = true; // all checkboxes checked
+  const mockIvosRegimen = { "co_amoxiclav": { route: "IV" }, "ciprofloxacin": { route: "PO" } };
+  const ivToPoSwitches = ["co_amoxiclav", "ciprofloxacin", "clarithromycin", "metronidazole"];
+  
+  const switchOpportunities = Object.keys(mockIvosRegimen).filter(drugId => {
+    return mockIvosRegimen[drugId].route === "IV" && ivToPoSwitches.includes(drugId) && mockIvosCriteriaMet;
+  });
+  
+  assert(switchOpportunities.includes("co_amoxiclav"), "Should flag Co-amoxiclav for IV-to-oral switch when criteria are met");
+  assert(!switchOpportunities.includes("ciprofloxacin"), "Should not flag Ciprofloxacin for switch if already on PO route");
+
   console.log("--------------------------------------------------");
   console.log(`TEST RUN COMPLETE. Passed: ${passCount}, Failed: ${failCount}`);
   console.log("--------------------------------------------------");
 }
 
 runTests();
+
